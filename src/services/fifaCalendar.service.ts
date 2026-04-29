@@ -1,9 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { Match } from '../models/match.model';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export class FifaCalendarService {
   private partidos: Match[] = [];
+  private grupos: { [key: string]: Match[] } = {};
 
   constructor() {
     this.cargarPartidos();
@@ -11,7 +16,20 @@ export class FifaCalendarService {
 
   private cargarPartidos(): void {
     try {
-      const jsonPath = path.join(__dirname, '../../../data/worldcup2026.json');
+      let jsonPath = path.join(__dirname, '../../../../mundial_chatbot/base-ts-baileys-memory/data/worldcup2026.json');
+      
+      if (!fs.existsSync(jsonPath)) {
+        jsonPath = path.join(process.cwd(), 'data', 'worldcup2026.json');
+      }
+      
+      console.log('📂 Buscando calendario en:', jsonPath);
+      
+      if (!fs.existsSync(jsonPath)) {
+        console.error('❌ Archivo no encontrado:', jsonPath);
+        this.partidos = [];
+        return;
+      }
+      
       const rawData = fs.readFileSync(jsonPath, 'utf8');
       const jsonData = JSON.parse(rawData);
       
@@ -44,6 +62,14 @@ export class FifaCalendarService {
         };
       });
       
+      // Organizar por grupos
+      this.partidos.forEach(match => {
+        if (match.group && !match.isKnockout) {
+          if (!this.grupos[match.group]) this.grupos[match.group] = [];
+          this.grupos[match.group].push(match);
+        }
+      });
+      
       console.log(`✅ Cargados ${this.partidos.length} partidos del Mundial 2026`);
     } catch (error) {
       console.error('Error cargando calendario:', error);
@@ -51,10 +77,41 @@ export class FifaCalendarService {
     }
   }
 
-  getProximosPartidos(cantidad: number = 3): Match[] {
+  // ============ MÉTODOS AUXILIARES ============
+  
+  private formatearFecha(dateStr: string): string {
+    const partes = dateStr.split('-');
+    if (partes.length === 3) {
+      return `${partes[2]}-${partes[1]}-${partes[0]}`;
+    }
+    return dateStr;
+  }
+
+  private getMatchdayNumber(round: string): number {
+    const match = round.match(/Matchday (\d+)/);
+    if (match) {
+      return parseInt(match[1]);
+    }
+    if (round.includes('Round of 32')) return 100;
+    if (round.includes('Round of 16')) return 101;
+    if (round.includes('Quarter-final')) return 102;
+    if (round.includes('Semi-final')) return 103;
+    if (round.includes('Match for third place')) return 104;
+    if (round.includes('Final')) return 105;
+    return 999;
+  }
+
+  // ============ MÉTODOS EXISTENTES ============
+  
+  getProximosPartidos(cantidad: number = 5): Match[] {
     const ahora = new Date();
-    return this.partidos
-      .filter(p => p.fechaHora && p.fechaHora > ahora)
+    const futuros = this.partidos.filter(p => p.fechaHora && p.fechaHora > ahora);
+    
+    if (futuros.length === 0) {
+      return this.partidos.slice(0, cantidad);
+    }
+    
+    return futuros
       .sort((a, b) => (a.fechaHora!.getTime() - b.fechaHora!.getTime()))
       .slice(0, cantidad);
   }
@@ -66,11 +123,157 @@ export class FifaCalendarService {
   getTodosLosEquipos(): string[] {
     const equipos = new Set<string>();
     this.partidos.forEach(p => {
-      if (!p.team1.match(/^\d/) && !p.team1.includes('W')) {
+      if (!p.team1.match(/^\d/) && !p.team1.includes('W') && !p.team1.includes('L')) {
         equipos.add(p.team1);
         equipos.add(p.team2);
       }
     });
     return Array.from(equipos).sort();
+  }
+
+  getGrupos(): { [key: string]: Match[] } {
+    return this.grupos;
+  }
+
+  // ============ MÉTODOS PARA PRÓXIMOS PARTIDOS ============
+  
+  formatearListaProximos(partidos: Match[]): string {
+    if (partidos.length === 0) {
+      return '📭 No hay partidos próximos programados. ¡El mundial ya terminó o aún no comenzó!';
+    }
+    
+    let mensaje = '⚽ *PRÓXIMOS PARTIDOS* ⚽\n\n';
+    
+    partidos.forEach((p, idx) => {
+      const emoji = p.isKnockout ? '🏆' : '📋';
+      const fechaFormateada = this.formatearFecha(p.date);
+      mensaje += `${emoji} ${idx + 1}. *${p.team1} vs ${p.team2}*\n`;
+      mensaje += `   📅 ${fechaFormateada}\n`;
+      mensaje += `   ⏰ ${p.time}\n`;
+      mensaje += `   🏟️ ${p.ground}\n`;
+      if (p.group) {
+        const nombreGrupo = p.group.replace('Group', 'Grupo');
+        mensaje += `   📌 ${nombreGrupo}\n`;
+      }
+      mensaje += '\n';
+    });
+    
+    mensaje += '💡 *Tip:* Usá `PREDIGO [equipo1] [goles] - [goles] [equipo2]` para pronosticar.';
+    return mensaje;
+  }
+
+  // ============ MÉTODOS PARA EQUIPOS ============
+  
+  formatearListaEquipos(): string {
+    const equipos = this.getTodosLosEquipos();
+    const grupos = this.getGrupos();
+    
+    let mensaje = '🏆 *EQUIPOS DEL MUNDIAL 2026* 🏆\n\n';
+    
+    for (const [grupo, partidosDelGrupo] of Object.entries(grupos)) {
+      const equiposEnGrupo = new Set<string>();
+      partidosDelGrupo.forEach(p => {
+        equiposEnGrupo.add(p.team1);
+        equiposEnGrupo.add(p.team2);
+      });
+      
+      const nombreGrupo = grupo.replace('Group', 'Grupo');
+      mensaje += `*${nombreGrupo}:* ${Array.from(equiposEnGrupo).join(', ')}\n`;
+    }
+    
+    mensaje += `\n📊 *Total: ${equipos.length} selecciones participantes*\n`;
+    mensaje += `🌍 *Continentes:* América (Norte, Centro, Sur), Europa, África, Asia, Oceanía\n`;
+    mensaje += `\n💡 *Tip:* Escribí "PROXIMOS" para ver los próximos partidos.`;
+    
+    return mensaje;
+  }
+
+  // ============ MÉTODOS PARA CALENDARIO COMPLETO ============
+  
+  getCalendarioCompleto(): string {
+    // Ordenar partidos por número de jornada
+    const partidosOrdenados = [...this.partidos];
+    
+    partidosOrdenados.sort((a, b) => {
+      const numA = this.getMatchdayNumber(a.round);
+      const numB = this.getMatchdayNumber(b.round);
+      
+      if (numA !== numB) {
+        return numA - numB;
+      }
+      
+      if (a.fechaHora && b.fechaHora) {
+        return a.fechaHora.getTime() - b.fechaHora.getTime();
+      }
+      return 0;
+    });
+    
+    let calendario = '📅 *CALENDARIO COMPLETO MUNDIAL 2026* 📅\n\n';
+    let rondaActual = '';
+    let contador = 0;
+    
+    for (const partido of partidosOrdenados) {
+      if (partido.round !== rondaActual) {
+        rondaActual = partido.round;
+        const emoji = this.getEmojiPorRonda(rondaActual);
+        const nombreRonda = this.formatearNombreRonda(rondaActual);
+        calendario += `\n${emoji} *${nombreRonda}*\n`;
+      }
+      
+      const fechaFormateada = this.formatearFecha(partido.date);
+      calendario += `• ${fechaFormateada} | ${partido.team1} vs ${partido.team2}\n`;
+      calendario += `  ⏰ ${partido.time} | 🏟️ ${partido.ground}\n`;
+      contador++;
+      
+      if (contador > 50 && calendario.length > 1500) {
+        const restantes = this.partidos.length - contador;
+        calendario += `\n📌 *Y ${restantes} partidos más...*\n`;
+        calendario += `💡 Escribí "PROXIMOS" para ver los próximos partidos.`;
+        break;
+      }
+    }
+    
+    calendario += `\n\n📊 *Total: ${this.partidos.length} partidos*`;
+    return calendario;
+  }
+
+  private getEmojiPorRonda(ronda: string): string {
+    if (ronda.includes('Matchday')) return '📋';
+    if (ronda.includes('Round of 32')) return '🔰';
+    if (ronda.includes('Round of 16')) return '🔰';
+    if (ronda.includes('Quarter-final')) return '🏆';
+    if (ronda.includes('Semi-final')) return '🏆';
+    if (ronda.includes('Final')) return '🏆👑';
+    if (ronda.includes('Match for third place')) return '🥉';
+    return '⚽';
+  }
+
+  private formatearNombreRonda(ronda: string): string {
+    const nombres: { [key: string]: string } = {
+      'Matchday 1': '📋 JORNADA 1',
+      'Matchday 2': '📋 JORNADA 2',
+      'Matchday 3': '📋 JORNADA 3',
+      'Matchday 4': '📋 JORNADA 4',
+      'Matchday 5': '📋 JORNADA 5',
+      'Matchday 6': '📋 JORNADA 6',
+      'Matchday 7': '📋 JORNADA 7',
+      'Matchday 8': '📋 JORNADA 8',
+      'Matchday 9': '📋 JORNADA 9',
+      'Matchday 10': '📋 JORNADA 10',
+      'Matchday 11': '📋 JORNADA 11',
+      'Matchday 12': '📋 JORNADA 12',
+      'Matchday 13': '📋 JORNADA 13',
+      'Matchday 14': '📋 JORNADA 14',
+      'Matchday 15': '📋 JORNADA 15',
+      'Matchday 16': '📋 JORNADA 16',
+      'Matchday 17': '📋 JORNADA 17',
+      'Round of 32': '🔰 OCTAVOS DE FINAL',
+      'Round of 16': '🔰 CUARTOS DE FINAL',
+      'Quarter-final': '🏆 CUARTOS DE FINAL',
+      'Semi-final': '🏆 SEMIFINALES',
+      'Match for third place': '🥉 TERCER PUESTO',
+      'Final': '🏆👑 GRAN FINAL'
+    };
+    return nombres[ronda] || ronda;
   }
 }

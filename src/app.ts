@@ -12,14 +12,15 @@ import { welcomeFlow } from './flows/welcome.flow';
 import { hinchaRecordFlow } from './flows/hinchaRecord.flow';
 import { abuelaMundialistaFlow } from './flows/abuelaMundialista.flow';
 import { adivinoFlow } from './flows/adivino.flow';
+import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
 
 const PORT = process.env.PORT ?? 3008;
 
-// Inicializar servicios globalmente (opcional pero útil)
+// Inicializar servicios
 const locuraService = new LocuraService();
 const calendarService = new FifaCalendarService();
 
-// Flujo principal que maneja el menú y comandos
+// Flujo principal
 const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas', 'menu', 'ayuda'])
   .addAction(async (ctx, { flowDynamic, gotoFlow, state }) => {
     const phone = ctx.from;
@@ -44,17 +45,20 @@ Yo soy *El DT*, tu asistente de emociones futboleras.
 ⚽ *Tu nivel de locura inicial: ${user.locura}/100 pts*
 
 *Comandos disponibles:*
-• *TRIVIA* - Poné a prueba tus conocimientos
-• *RANKING* - Ver la tabla de los más locos
-• *TRISTE* - La abuela te consuela (cuando perdés)
-• *PREDIGO ARG 2-1 BRA* - Pronosticá resultados
+• *TRIVIA* - Poné a prueba tus conocimientos 🧠
+• *RANKING* - Ver la tabla de los más locos 🏆
+• *TRISTE* - La abuela te consuela (cuando perdés) 👵
+• *PREDIGO ARG 2-1 BRA* - Pronosticá resultados 🔮
+• *PROXIMOS* - Próximos partidos ⚽
+• *EQUIPOS* - Todas las selecciones 🌍
+• *CALENDARIO* - Partidos completos 📅
 
 ${partidosTexto}
 
-🎯 *Bonus:* Mandá un *audio gritando GOOOL* para subir tu locura!`);
+🎯 *Bonus:* Mandá un *audio gritando GOOOL* para subir tu locura! 🎙️`);
   });
 
-// Flujo para manejar comandos rápidos desde cualquier conversación
+// Flujo para manejar comandos rápidos
 const commandFlow = addKeyword<Provider, Database>(utils.setEvent('COMMAND_FLOW'))
   .addAction(async (ctx, { gotoFlow, flowDynamic }) => {
     const bodyText = ctx.body.toLowerCase();
@@ -71,11 +75,22 @@ const commandFlow = addKeyword<Provider, Database>(utils.setEvent('COMMAND_FLOW'
       return gotoFlow(adivinoFlow);
     }
     
-    // Si no reconoce, mostrar ayuda
-    await flowDynamic(`⚽ *Comandos disponibles:*\n• TRIVIA\n• RANKING\n• TRISTE\n• PREDIGO ARG 2-1 BRA\n\n*Bonus:* Enviá audio gritando GOOOL`);
+    if (bodyText === 'proximos' || bodyText === 'próximos') {
+      return gotoFlow(proximosFlow);
+    }
+    
+    if (bodyText === 'equipos' || bodyText === 'selecciones') {
+      return gotoFlow(equiposFlow);
+    }
+    
+    if (bodyText === 'calendario' || bodyText === 'fixture') {
+      return gotoFlow(calendarioFlow);
+    }
+    
+    await flowDynamic(`⚽ *Comandos disponibles:*\n• TRIVIA\n• RANKING\n• TRISTE\n• PREDIGO\n• PROXIMOS\n• EQUIPOS\n• CALENDARIO\n\n🎯 *Bonus:* Enviá audio gritando GOOOL`);
   });
 
-// Flujo para detectar audios (bonus de gol)
+// Flujo para detectar audios
 const audioFlow = addKeyword<Provider, Database>(utils.setEvent('AUDIO_FLOW'))
   .addAction(async (ctx, { flowDynamic }) => {
     const phone = ctx.from;
@@ -92,21 +107,23 @@ Tu nivel de locura subió por el audio emocionante.
 
 const main = async () => {
   console.log('🚀 Iniciando Bot del Mundial 2026...');
+  console.log('📅 Cargando calendario...');
   
-  // Crear flujos
   const adapterFlow = createFlow([
     mainFlow,
     welcomeFlow,
     hinchaRecordFlow,
     abuelaMundialistaFlow,
     adivinoFlow,
+    proximosFlow,
+    equiposFlow,
+    calendarioFlow,
     commandFlow,
     audioFlow
   ]);
   
-  // Configurar proveedor de WhatsApp con versión específica
   const adapterProvider = createProvider(Provider, { 
-    version: [2, 3000, 1035824857]  // Versión estable de WhatsApp
+    version: [2, 3000, 1035824857]
   });
   
   const adapterDB = new Database();
@@ -127,6 +144,7 @@ const main = async () => {
     })
   );
   
+  // Endpoint para obtener ranking
   adapterProvider.server.get(
     '/v1/ranking',
     handleCtx(async (bot, req, res) => {
@@ -136,12 +154,18 @@ const main = async () => {
     })
   );
   
-  // Iniciar servidor HTTP en el puerto especificado
   httpServer(+PORT);
   
   console.log(`✅ Bot del Mundial corriendo en http://localhost:${PORT}`);
-  console.log('📱 Escaneá el QR que aparece en la consola para conectar WhatsApp');
-  console.log('\n📋 *Comandos:* TRIVIA, RANKING, TRISTE, PREDIGO ARG 2-1 BRA');
+  console.log('📱 Escaneá el QR que aparece en la consola');
+  console.log('\n📋 *Comandos disponibles:*');
+  console.log('   • TRIVIA - Poné a prueba tus conocimientos');
+  console.log('   • RANKING - Tabla de los más locos');
+  console.log('   • TRISTE - Consuelo de la abuela');
+  console.log('   • PREDIGO - Pronosticá resultados');
+  console.log('   • PROXIMOS - Próximos partidos');
+  console.log('   • EQUIPOS - Todas las selecciones');
+  console.log('   • CALENDARIO - Partidos completos');
 };
 
 main().catch(console.error);
