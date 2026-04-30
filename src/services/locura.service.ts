@@ -1,10 +1,21 @@
 import { UserWorldCupData, Prediction } from '../models/user.model';
 
 export class LocuraService {
+  private static instance: LocuraService;
   private users: Map<string, UserWorldCupData> = new Map();
+
+  private constructor() {}  // Constructor privado para singleton
+
+  static getInstance(): LocuraService {
+    if (!LocuraService.instance) {
+      LocuraService.instance = new LocuraService();
+    }
+    return LocuraService.instance;
+  }
 
   async getUser(phone: string): Promise<UserWorldCupData> {
     if (this.users.has(phone)) {
+      console.log(`📖 Usuario encontrado: ${phone} - Locura: ${this.users.get(phone)?.locura}`);
       return this.users.get(phone)!;
     }
     
@@ -20,6 +31,8 @@ export class LocuraService {
     };
     
     this.users.set(phone, user);
+    console.log(`👤 NUEVO usuario registrado: ${phone} - Locura: ${user.locura}`);
+    console.log(`📊 Total usuarios en memoria: ${this.users.size}`);
     return user;
   }
 
@@ -33,7 +46,10 @@ export class LocuraService {
   async updateLocura(phone: string, puntos: number): Promise<number> {
     const user = await this.getUser(phone);
     const nuevaLocura = Math.min(100, Math.max(0, user.locura + puntos));
-    await this.updateUser(phone, { locura: nuevaLocura });
+    user.locura = nuevaLocura;
+    this.users.set(phone, user);
+    console.log(`📈 ${phone} +${puntos} pts → Locura: ${nuevaLocura}`);
+    console.log(`📊 Total usuarios: ${this.users.size}`);
     return nuevaLocura;
   }
 
@@ -55,8 +71,21 @@ export class LocuraService {
 
   async getRanking(limit: number = 10): Promise<UserWorldCupData[]> {
     const users = Array.from(this.users.values());
-    return users
+    
+    console.log(`📊 Generando ranking con ${users.length} usuarios:`);
+    users.forEach(u => {
+      console.log(`   - ${u.name} (${u.phone.slice(-8)}): ${u.locura} pts`);
+    });
+    
+    const ranking = users
       .sort((a, b) => b.locura - a.locura)
       .slice(0, limit);
+    
+    return ranking;
+  }
+
+  // Método para depuración
+  getAllUsers(): UserWorldCupData[] {
+    return Array.from(this.users.values());
   }
 }

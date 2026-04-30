@@ -1,6 +1,8 @@
 import { addKeyword } from '@builderbot/bot';
 import { LocuraService } from '../services/locura.service';
 
+const locuraService = LocuraService.getInstance();
+
 const abuelaRespuestas: Record<string, string[]> = {
   triste: [
     "Ay mijito, no llores por un partido. El fútbol da revanchas, la vida también. ¿Te preparo unos mates virtuales? ☕",
@@ -23,7 +25,6 @@ export const abuelaMundialistaFlow = addKeyword(['triste', 'perdimos', 'arbitro'
   .addAction(async (ctx, { flowDynamic }) => {
     const phone = ctx.from;
     const text = ctx.body.toLowerCase();
-    const locuraService = new LocuraService();
     
     let categoria: keyof typeof abuelaRespuestas = 'consejo';
     if (text.includes('triste') || text.includes('perdimos')) categoria = 'triste';
