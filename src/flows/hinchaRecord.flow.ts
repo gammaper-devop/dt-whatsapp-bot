@@ -22,7 +22,6 @@ const triviaQuestions = [
   }
 ];
 
-// ✅ Usar singleton
 const locuraService = LocuraService.getInstance();
 
 export const hinchaRecordFlow = addKeyword(['trivia', 'ranking'])
@@ -30,14 +29,11 @@ export const hinchaRecordFlow = addKeyword(['trivia', 'ranking'])
     const phone = ctx.from;
     const command = ctx.body.toLowerCase();
     
-    // Si es 'ranking', mostrar tabla
     if (command === 'ranking') {
-      console.log(`🏆 Solicitando ranking desde: ${phone}`);
-      
       const ranking = await locuraService.getRanking(10);
       
       if (ranking.length === 0) {
-        await flowDynamic(`🏆 *RANKING DE LOCURA MUNDIALISTA* 🏆\n\nAún no hay usuarios en el ranking.\n¡Sé el primero en participar!\n\n💡 Escribí "TRIVIA" o enviá un audio para empezar.`);
+        await flowDynamic(`🏆 *RANKING DE LOCURA MUNDIALISTA* 🏆\n\nAún no hay usuarios en el ranking.\n¡Sé el primero en participar!\n\n💡 Escribí "TRIVIA" para empezar.`);
         return;
       }
       
@@ -49,13 +45,12 @@ export const hinchaRecordFlow = addKeyword(['trivia', 'ranking'])
         rankingMsg += `${medalla} ${i+1}. *${nombreMostrar}* - ${u.locura} pts\n`;
       });
       
-      rankingMsg += `\n💡 *Tip:* Participá en trivias, predicciones y enviá audios para subir!`;
+      rankingMsg += `\n💡 *Tip:* Participá en trivias y predicciones para subir!`;
       
       await flowDynamic(rankingMsg);
       return;
     }
     
-    // Si es 'trivia', mostrar pregunta
     const randomTrivia = triviaQuestions[Math.floor(Math.random() * triviaQuestions.length)];
     await state.update({ currentTrivia: randomTrivia });
     

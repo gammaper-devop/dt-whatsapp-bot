@@ -4,7 +4,7 @@ export class LocuraService {
   private static instance: LocuraService;
   private users: Map<string, UserWorldCupData> = new Map();
 
-  private constructor() {}  // Constructor privado para singleton
+  private constructor() {}
 
   static getInstance(): LocuraService {
     if (!LocuraService.instance) {
@@ -15,7 +15,6 @@ export class LocuraService {
 
   async getUser(phone: string): Promise<UserWorldCupData> {
     if (this.users.has(phone)) {
-      console.log(`📖 Usuario encontrado: ${phone} - Locura: ${this.users.get(phone)?.locura}`);
       return this.users.get(phone)!;
     }
     
@@ -31,8 +30,7 @@ export class LocuraService {
     };
     
     this.users.set(phone, user);
-    console.log(`👤 NUEVO usuario registrado: ${phone} - Locura: ${user.locura}`);
-    console.log(`📊 Total usuarios en memoria: ${this.users.size}`);
+    console.log(`👤 Nuevo usuario registrado: ${phone} - Locura: ${user.locura}`);
     return user;
   }
 
@@ -49,7 +47,6 @@ export class LocuraService {
     user.locura = nuevaLocura;
     this.users.set(phone, user);
     console.log(`📈 ${phone} +${puntos} pts → Locura: ${nuevaLocura}`);
-    console.log(`📊 Total usuarios: ${this.users.size}`);
     return nuevaLocura;
   }
 
@@ -77,14 +74,9 @@ export class LocuraService {
       console.log(`   - ${u.name} (${u.phone.slice(-8)}): ${u.locura} pts`);
     });
     
-    const ranking = users
-      .sort((a, b) => b.locura - a.locura)
-      .slice(0, limit);
-    
-    return ranking;
+    return users.sort((a, b) => b.locura - a.locura).slice(0, limit);
   }
 
-  // Método para depuración
   getAllUsers(): UserWorldCupData[] {
     return Array.from(this.users.values());
   }
