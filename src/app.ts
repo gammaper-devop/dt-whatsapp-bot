@@ -6,11 +6,14 @@ import { BaileysProvider as Provider } from '@builderbot/provider-baileys';
 import { LocuraService } from './services/locura.service';
 import { FifaCalendarService } from './services/fifaCalendar.service';
 
+// Importar MongoDB
+import mongoose from 'mongoose';
+
 // Importar flujos del mundial
 import { welcomeFlow } from './flows/welcome.flow';
 import { hinchaRecordFlow } from './flows/hinchaRecord.flow';
 import { abuelaMundialistaFlow } from './flows/abuelaMundialista.flow';
-import { adivinoFlow } from './flows/adivino.flow';
+import { adivinoFlow, iaConsultarFlow } from './flows/adivino.flow';
 import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
 
 const PORT = process.env.PORT ?? 3008;
@@ -46,7 +49,8 @@ Yo soy *El DT*, tu asistente de emociones futboleras.
 • *TRIVIA* - Poné a prueba tus conocimientos 🧠
 • *RANKING* - Ver la tabla de los más locos 🏆
 • *TRISTE* - La abuela te consuela (cuando perdés) 👵
-• *PREDIGO ARG 2-1 BRA* - Pronosticá resultados 🔮
+• *PREDIGO ARG 2-1 BRA* - Juega tus propios pronósticos 🔮
+• *IA ARG vs BRA* - Consulta la predicción de nuestra IA 🧠
 • *PROXIMOS* - Próximos partidos ⚽
 • *EQUIPOS* - Todas las selecciones 🌍
 • *CALENDARIO* - Partidos completos 📅
@@ -87,6 +91,13 @@ const commandFlow = addKeyword<Provider, Database>(utils.setEvent('COMMAND_FLOW'
   });
 
 const main = async () => {
+
+  const MONGO_URI = process.env.MONGO_URI ?? 'mongodb://127.0.0.1:27017/mongo-mundial';
+
+  console.log('🍃 Conectando a MongoDB...');
+  await mongoose.connect(MONGO_URI);
+  console.log('✅ MongoDB conectado satisfactoriamente.');
+
   console.log('🚀 Iniciando Bot del Mundial 2026...');
   console.log('📅 Cargando calendario...');
   
@@ -96,6 +107,7 @@ const main = async () => {
     hinchaRecordFlow,
     abuelaMundialistaFlow,
     adivinoFlow,
+    iaConsultarFlow,
     proximosFlow,
     equiposFlow,
     calendarioFlow,
@@ -132,7 +144,7 @@ const main = async () => {
   console.log('   • TRIVIA - Poné a prueba tus conocimientos');
   console.log('   • RANKING - Tabla de los más locos');
   console.log('   • TRISTE - Consuelo de la abuela');
-  console.log('   • PREDIGO - Pronosticá resultados');
+  console.log('   • PREDIGO - Pronostica resultados');
   console.log('   • PROXIMOS - Próximos partidos');
   console.log('   • EQUIPOS - Todas las selecciones');
   console.log('   • CALENDARIO - Partidos completos');
