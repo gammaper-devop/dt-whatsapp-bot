@@ -80,4 +80,24 @@ export class LocuraService {
   getAllUsers(): UserWorldCupData[] {
     return Array.from(this.users.values());
   }
-}
+
+  /**
+   * Conecta con la API de FastAPI para obtener el pronóstico de la IA
+   */
+  async obtenerPronosticoIA(equipo1: string, equipo2: string): Promise<any> {
+    try {
+      const url = `http://127.0.0.1:8000/api/v1/pronostico?equipo1=${encodeURIComponent(equipo1)}&equipo2=${encodeURIComponent(equipo2)}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Error en la API de IA: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("❌ Error al conectar con el Backend de IA:", error);
+      return null;
+    }
+  }
+} // <-- Esta es la llave final que cierra la clase LocuraService

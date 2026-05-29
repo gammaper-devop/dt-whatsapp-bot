@@ -16,10 +16,12 @@
     "@builderbot/provider-baileys": "latest",
     "@whiskeysockets/baileys": "6.5.0",
     "dotenv": "^16.6.1",
+    "mongoose": "^9.6.3",
     "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
+    "@types/mongoose": "^5.11.96",
     "@types/node": "^25.6.0",
     "eslint": "^9.0.0",
     "eslint-plugin-builderbot": "latest",

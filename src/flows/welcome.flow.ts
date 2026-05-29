@@ -30,6 +30,7 @@ export const welcomeFlow = addKeyword(EVENTS.WELCOME)
   • RANKING - Tabla de los más locos
   • TRISTE - Consuelo de la abuela
   • PREDIGO ARG 2-1 BRA - Pronosticá resultados
+  • IA ARG vs BRA - Consulta la predicción de nuestra IA
   • PROXIMOS - Próximos partidos
   • EQUIPOS - Todas las selecciones
   • CALENDARIO - Partidos completos
