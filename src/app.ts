@@ -11,7 +11,7 @@ import mongoose from 'mongoose';
 
 // Importar flujos del mundial
 import { welcomeFlow } from './flows/welcome.flow';
-import { hinchaRecordFlow } from './flows/hinchaRecord.flow';
+import { hinchaRecordFlow, rankingFlow } from './flows/hinchaRecord.flow';
 import { abuelaMundialistaFlow } from './flows/abuelaMundialista.flow';
 import { adivinoFlow, iaConsultarFlow } from './flows/adivino.flow';
 import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
@@ -22,7 +22,9 @@ const PORT = process.env.PORT ?? 3008;
 const locuraService = LocuraService.getInstance();
 const calendarService = new FifaCalendarService();
 
-// Flujo principal
+// =====================================================================
+// FLUJO PRINCIPAL UNIFICADO: MENÚ Y ENRUTADOR SEGURO (Bajo control)
+// =====================================================================
 const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas', 'menu', 'ayuda'])
   .addAction(async (ctx, { flowDynamic }) => {
     const phone = ctx.from;
@@ -46,48 +48,48 @@ Yo soy *El DT*, tu asistente de emociones futboleras.
 ⚽ *Tu nivel de locura: ${user.locura}/100 pts*
 
 *Comandos disponibles:*
-• *TRIVIA* - Poné a prueba tus conocimientos 🧠
-• *RANKING* - Ver la tabla de los más locos 🏆
-• *TRISTE* - La abuela te consuela (cuando perdés) 👵
-• *PREDIGO ARG 2-1 BRA* - Juega tus propios pronósticos 🔮
-• *IA ARG vs BRA* - Consulta la predicción de nuestra IA 🧠
-• *PROXIMOS* - Próximos partidos ⚽
-• *EQUIPOS* - Todas las selecciones 🌍
-• *CALENDARIO* - Partidos completos 📅
+1. *TRIVIA* - Poné a prueba tus conocimientos 🧠
+2. *RANKING* - Ver la tabla de los más locos 🏆
+3. *TRISTE* - La abuela te consuela (cuando perdés) 👵
+4. *PREDIGO* - Juega tus propios pronósticos 🔮
+5. *IA* - Consulta la predicción de nuestra IA 🧠
+6. *PROXIMOS* - Próximos partidos ⚽
+7. *EQUIPOS* - Todas las selecciones 🌍
+8. *CALENDARIO* - Partidos completos 📅
 
-${partidosTexto}`);
-  });
+${partidosTexto}
 
-// Flujo para manejar comandos rápidos
-const commandFlow = addKeyword<Provider, Database>(utils.setEvent('COMMAND_FLOW'))
-  .addAction(async (ctx, { gotoFlow, flowDynamic }) => {
-    const bodyText = ctx.body.toLowerCase();
+👉 _Responde directamente con el *NÚMERO* de la opción que deseas elegir:_`);
+  })
+  .addAction({ capture: true }, async (ctx, { gotoFlow, flowDynamic, fallBack }) => {
+    const opcion = ctx.body.trim();
     
-    if (bodyText === 'trivia' || bodyText === 'ranking') {
-      return gotoFlow(hinchaRecordFlow);
+    // Lista de opciones numéricas estrictas que permitimos procesar en el menú
+    const opcionesValidas = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    
+    if (!opcionesValidas.includes(opcion)) {
+      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 8* o escribe *MENU* para volver a empezar.`);
     }
     
-    if (['triste', 'perdimos', 'arbitro', 'injusticia', 'solo', 'consejo'].some(c => bodyText.includes(c))) {
-      return gotoFlow(abuelaMundialistaFlow);
+    // El enrutador ahora solo se ejecuta de forma interna y controlada tras la captura
+    switch (opcion) {
+      case '1':
+        return gotoFlow(hinchaRecordFlow); // Ejecuta Trivia de forma aislada
+      case '2':
+        return gotoFlow(rankingFlow); // Ejecuta Ranking de forma aislada
+      case '3':
+        return gotoFlow(abuelaMundialistaFlow);
+      case '4':
+        return gotoFlow(adivinoFlow);
+      case '5':
+        return gotoFlow(iaConsultarFlow);
+      case '6':
+        return gotoFlow(proximosFlow);
+      case '7':
+        return gotoFlow(equiposFlow);
+      case '8':
+        return gotoFlow(calendarioFlow);
     }
-    
-    if (bodyText.includes('predigo') || bodyText.includes('predecir') || bodyText.includes('pronostico')) {
-      return gotoFlow(adivinoFlow);
-    }
-    
-    if (bodyText === 'proximos' || bodyText === 'próximos') {
-      return gotoFlow(proximosFlow);
-    }
-    
-    if (bodyText === 'equipos' || bodyText === 'selecciones') {
-      return gotoFlow(equiposFlow);
-    }
-    
-    if (bodyText === 'calendario' || bodyText === 'fixture') {
-      return gotoFlow(calendarioFlow);
-    }
-    
-    await flowDynamic(`⚽ *Comandos disponibles:*\n• TRIVIA\n• RANKING\n• TRISTE\n• PREDIGO\n• PROXIMOS\n• EQUIPOS\n• CALENDARIO`);
   });
 
 const main = async () => {
@@ -104,14 +106,14 @@ const main = async () => {
   const adapterFlow = createFlow([
     mainFlow,
     welcomeFlow,
-    hinchaRecordFlow,
-    abuelaMundialistaFlow,
-    adivinoFlow,
-    iaConsultarFlow,
-    proximosFlow,
-    equiposFlow,
-    calendarioFlow,
-    commandFlow
+    hinchaRecordFlow,      // Se activa directo con la opción 1
+    rankingFlow,           // Nueva constante independiente para la opción 2!
+    abuelaMundialistaFlow, // Se activa directo con la opción 3
+    adivinoFlow,           // Opción 4
+    iaConsultarFlow,       // Opción 5
+    proximosFlow,          // Opción 6 (Asegúrate de agregar '6' en sus keywords en calendario.flow)
+    equiposFlow,           // Opción 7 (Asegúrate de agregar '7' en sus keywords en calendario.flow)
+    calendarioFlow         // Opción 8 (Asegúrate de agregar '8' en sus keywords en calendario.flow)
   ]);
   
   const adapterProvider = createProvider(Provider, { 

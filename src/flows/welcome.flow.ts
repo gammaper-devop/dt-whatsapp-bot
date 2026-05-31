@@ -1,3 +1,4 @@
+
 import { addKeyword, EVENTS } from '@builderbot/bot';
 import { LocuraService } from '../services/locura.service';
 import { FifaCalendarService } from '../services/fifaCalendar.service';
@@ -23,17 +24,21 @@ export const welcomeFlow = addKeyword(EVENTS.WELCOME)
     
     await flowDynamic(`🎉 *¡BIENVENIDO AL TERMÓMETRO DEL MUNDIAL, ${userName.toUpperCase()}!* 🎉
 
+Yo soy *El DT*, tu asistente de emociones futboleras.
+
 ⚽ *Tu nivel de locura: ${user.locura}/100 pts*
 
-  *Comandos disponibles:*
-  • TRIVIA - Poné a prueba tus conocimientos
-  • RANKING - Tabla de los más locos
-  • TRISTE - Consuelo de la abuela
-  • PREDIGO ARG 2-1 BRA - Pronosticá resultados
-  • IA ARG vs BRA - Consulta la predicción de nuestra IA
-  • PROXIMOS - Próximos partidos
-  • EQUIPOS - Todas las selecciones
-  • CALENDARIO - Partidos completos
+*Comandos disponibles:*
+1. *TRIVIA* - Poné a prueba tus conocimientos 🧠
+2. *RANKING* - Ver la tabla de los más locos 🏆
+3. *TRISTE* - La abuela te consuela (cuando perdés) 👵
+4. *PREDIGO* - Juega tus propios pronósticos 🔮
+5. *IA* - Consulta la predicción de nuestra IA 🧠
+6. *PROXIMOS* - Próximos partidos ⚽
+7. *EQUIPOS* - Todas las selecciones 🌍
+8. *CALENDARIO* - Partidos completos 📅
 
-  ${partidosTexto}`);
+${partidosTexto}
+
+👉 _Responde con el *NÚMERO* de la opción que desees._`);
   });
