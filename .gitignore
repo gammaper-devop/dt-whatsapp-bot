@@ -1,10 +1,89 @@
-dist/*
-node_modules
-.env
-.pnpm-store
-*_sessions
-*tokens
-.wwebjs*
+# =====================================================================
+# REGLAS DEL PROYECTO: CHATBOT DEL MUNDIAL (BuilderBot / TS)
+# =====================================================================
 
-*.log
+# Dependencias e Instaladores
+node_modules/
+.pnpm-store/
+jspm_packages/
+web_modules/
+.npm
+.yarn
+
+# Compilación y Salidas (TypeScript / Build)
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Archivos de Configuración Local y Secretos (¡CRÍTICO!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+
+# Sesiones de WhatsApp, Tokens y Autenticación (¡Evita cierres de sesión!)
+*_sessions/
+*sessions/
+*tokens/
+.wwebjs_auth/
+.wwebjs_cache/
+auth_info_baileys/
+creds.json
+session.json
+
+# Archivos Multimedia Temporales del Bot
 *qr.png
+*.qr.png
+/downloads/
+/media/
+/temp/
+
+# Logs del Sistema y Depuración
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =====================================================================
+# ARCHIVOS DE SISTEMA OPERATIVO Y EDITORES (Basura local)
+# =====================================================================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.lnk
+*.cab
+[Dd]ownloads/
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Editores de Código (VS Code, WebStorm, etc.)
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
