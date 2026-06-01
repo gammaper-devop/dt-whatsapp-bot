@@ -29,7 +29,7 @@ Yo soy *El DT*, tu asistente de emociones futboleras.
 ⚽ *Tu nivel de locura: ${user.locura}/100 pts*
 
 *Comandos disponibles:*
-1. *TRIVIA* - Poné a prueba tus conocimientos 🧠
+1. *TRIVIA* - Pon a prueba tus conocimientos 🧠
 2. *RANKING* - Ver la tabla de los más locos 🏆
 3. *TRISTE* - La abuela te consuela (cuando perdés) 👵
 4. *PREDIGO* - Juega tus propios pronósticos 🔮
@@ -37,6 +37,7 @@ Yo soy *El DT*, tu asistente de emociones futboleras.
 6. *PROXIMOS* - Próximos partidos ⚽
 7. *EQUIPOS* - Todas las selecciones 🌍
 8. *CALENDARIO* - Partidos completos 📅
+9. *PERFIL* - Configura tu perfil 👤
 
 ${partidosTexto}
 

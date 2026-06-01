@@ -15,6 +15,7 @@ import { hinchaRecordFlow, rankingFlow } from './flows/hinchaRecord.flow';
 import { abuelaMundialistaFlow } from './flows/abuelaMundialista.flow';
 import { adivinoFlow, iaConsultarFlow } from './flows/adivino.flow';
 import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
+import { perfilFlow } from './flows/perfil.flow';
 
 const PORT = process.env.PORT ?? 3008;
 
@@ -56,6 +57,7 @@ Yo soy *El DT*, tu asistente de emociones futboleras.
 6. *PROXIMOS* - Próximos partidos ⚽
 7. *EQUIPOS* - Todas las selecciones 🌍
 8. *CALENDARIO* - Partidos completos 📅
+9. *PERFIL* - Configura tu perfil 👤
 
 ${partidosTexto}
 
@@ -65,10 +67,10 @@ ${partidosTexto}
     const opcion = ctx.body.trim();
     
     // Lista de opciones numéricas estrictas que permitimos procesar en el menú
-    const opcionesValidas = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    const opcionesValidas = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     
     if (!opcionesValidas.includes(opcion)) {
-      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 8* o escribe *MENU* para volver a empezar.`);
+      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 9* o escribe *MENU* para volver a empezar.`);
     }
     
     // El enrutador ahora solo se ejecuta de forma interna y controlada tras la captura
@@ -89,6 +91,8 @@ ${partidosTexto}
         return gotoFlow(equiposFlow);
       case '8':
         return gotoFlow(calendarioFlow);
+      case '9':
+        return gotoFlow(perfilFlow);
     }
   });
 
@@ -111,9 +115,10 @@ const main = async () => {
     abuelaMundialistaFlow, // Se activa directo con la opción 3
     adivinoFlow,           // Opción 4
     iaConsultarFlow,       // Opción 5
-    proximosFlow,          // Opción 6 (Asegúrate de agregar '6' en sus keywords en calendario.flow)
-    equiposFlow,           // Opción 7 (Asegúrate de agregar '7' en sus keywords en calendario.flow)
-    calendarioFlow         // Opción 8 (Asegúrate de agregar '8' en sus keywords en calendario.flow)
+    proximosFlow,          // Opción 6 calendario.flow
+    equiposFlow,           // Opción 7 calendario.flow
+    calendarioFlow,        // Opción 8 calendario.flow
+    perfilFlow             // Opción 9 perfil.flow
   ]);
   
   const adapterProvider = createProvider(Provider, { 
@@ -150,6 +155,7 @@ const main = async () => {
   console.log('   • PROXIMOS - Próximos partidos');
   console.log('   • EQUIPOS - Todas las selecciones');
   console.log('   • CALENDARIO - Partidos completos');
+  console.log('   • PERFIL - Configura tu perfil');
 };
 
 main().catch(console.error);

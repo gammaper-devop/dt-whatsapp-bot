@@ -79,7 +79,7 @@ export const adivinoFlow = addKeyword(['solicitar_predigo_interno'])
 
     const nuevaLocura = await locuraService.updateLocura(phone, 5);
 
-    await flowDynamic(`🎰 *PREDICCIÓN GRABADA EN DISCO (MongoDB)* 🎰\n\n⚽ *Partido:* ${partidoMatch.team1} vs ${partidoMatch.team2}\n🎯 *Tu score:* ${parsed.team1} ${parsed.score1} - ${parsed.score2} ${parsed.team2}\n\n📈 *Bonus de locura:* +5 pts (Total: ${nuevaLocura}/100 pts)\n\n💡 _¡Tus datos servirán para reentrenar a nuestra IA al final de la jornada!_\n\n_Escribe *MENU* para volver al inicio._`);
+    await flowDynamic(`🎰 *PREDICCIÓN GUARDADA* 🎰\n\n⚽ *Partido:* ${partidoMatch.team1} vs ${partidoMatch.team2}\n🎯 *Tu score:* ${parsed.team1} ${parsed.score1} - ${parsed.score2} ${parsed.team2}\n\n📈 *Bonus de locura:* +5 pts (Total: ${nuevaLocura}/100 pts)\n\n💡 _¡Tus datos servirán para reentrenar a nuestra IA al final de la jornada!_\n\n_Escribe *MENU* para volver al inicio._`);
   });
 
 // =====================================================================
@@ -87,7 +87,7 @@ export const adivinoFlow = addKeyword(['solicitar_predigo_interno'])
 // =====================================================================
 export const iaConsultarFlow = addKeyword(['solicitar_ia_interna'])
   .addAction(async (ctx, { flowDynamic }) => {
-    await flowDynamic(`🧠 *EL CONSULTOR ANALÍTICO IA* 🧠\n\n¿Qué partido quieres que procese el algoritmo *Random Forest*?\n\n✍️ *Escríbelo así:*\n👉 \`Colombia vs Portugal\`\n👉 \`Alemania - España\`\n\n_Escribe los equipos a consultar:_`);
+    await flowDynamic(`🧠 *EL CONSULTOR ANALÍTICO IA* 🧠\n\n¿Qué partido quieres que procese el algoritmo *Random Forest*?\n\n✍️ *Escríbelo así:*\n👉 \`Colombia vs Uzbekistan\`\n👉 \`Argentina - Argelia\`\n\n_Escribe los equipos a consultar:_`);
   })
   .addAction({ capture: true }, async (ctx, { flowDynamic, fallBack }) => {
     const message = ctx.body.trim();
@@ -99,7 +99,7 @@ export const iaConsultarFlow = addKeyword(['solicitar_ia_interna'])
     const equipos = parseConsultaIA(message);
 
     if (!equipos) {
-      return fallBack(`⚠️ *No entendí los rivales.*\n\nEscribe los dos países separados por la palabra *vs* o por un guion.\nEjemplo: \`Colombia vs Portugal\`\n\n_(O escribe *MENU* para salir)_`);
+      return fallBack(`⚠️ *No entendí los rivales.*\n\nEscribe los dos países separados por la palabra *vs* o por un guion.\nEjemplo: \`Colombia vs Uzbekistan\`\n\n_(O escribe *MENU* para salir)_`);
     }
 
     await flowDynamic(`🧠 *Conectando con el Backend de Python...* ⏳\nTraduciendo y procesando Big Data para *${equipos.eq1}* vs *${equipos.eq2}*...`);
@@ -124,7 +124,7 @@ export const iaConsultarFlow = addKeyword(['solicitar_ia_interna'])
 🎯 *Marcador Exacto:* ${pronosticoIA.marcador_exacto}
 
 --------------------------------------------------
-🤖 _Modelo Predictivo Ensamble (Random Forest)_\n\n_Escribe *MENU* para regresar al menú principal._`;
+\n_Escribe *MENU* para regresar al menú principal._`;
 
     await flowDynamic(flyerWhatsApp);
   });

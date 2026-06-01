@@ -1,6 +1,7 @@
 import { addKeyword } from '@builderbot/bot';
 import { LocuraService } from '../services/locura.service';
 
+// Banco de preguntas expandido
 const triviaQuestions = [
   {
     question: "¿Quién ganó el Mundial 2018?",
@@ -19,70 +20,100 @@ const triviaQuestions = [
     options: ["Alemania", "Italia", "Brasil"],
     answer: "Brasil",
     explanation: "Brasil ganó 5 mundiales (1958, 1962, 1970, 1994, 2002)."
+  },
+  {
+    question: "¿En qué Mundial Diego Maradona anotó el 'Gol del Siglo' contra Inglaterra?",
+    options: ["España 1982", "México 1986", "Italia 1990"],
+    answer: "México 1986",
+    explanation: "Fue en los cuartos de final de México 1986 en el Estadio Azteca."
+  },
+  {
+    question: "¿Qué país será el anfitrión de la gran final del Mundial 2026?",
+    options: ["México", "Canadá", "Estados Unidos"],
+    answer: "Estados Unidos",
+    explanation: "La final se jugará en el MetLife Stadium de Nueva Jersey, Estados Unidos."
   }
 ];
 
 const locuraService = LocuraService.getInstance();
 
 // =====================================================================
-// TRIVIA INTERACTIVA (Invocada de forma segura por el menú)
+// OPT 1: TRIVIA INTERACTIVA (Validador Dinámico Híbrido)
 // =====================================================================
-export const hinchaRecordFlow = addKeyword(['ejecutar_trivia_interna'])
+export const hinchaRecordFlow = addKeyword(['solicitar_trivia_interna'])
   .addAction(async (ctx, { flowDynamic, state }) => {
+    // Seleccionar pregunta aleatoria
     const randomTrivia = triviaQuestions[Math.floor(Math.random() * triviaQuestions.length)];
     await state.update({ currentTrivia: randomTrivia });
     
-    const msg = `📊 *HINCHA RÉCORD - TRIVIA* 📊\n\n${randomTrivia.question}\n\n${randomTrivia.options.map((opt, i) => `${i+1}. ${opt}`).join('\n')}\n\nRespondé con el NÚMERO de la opción correcta. (+10 pts)\n\n_(O escribe *MENU* para salir)_`;
+    const msg = `📊 *HINCHA RÉCORD - TRIVIA* 📊\n\n${randomTrivia.question}\n\n${randomTrivia.options.map((opt, i) => `${i+1}️⃣ ${opt}`).join('\n')}\n\n💡 *¿Cómo responder?*\nPuedes escribir el *NÚMERO* de la opción o el *TEXTO* de la respuesta.\n\n_(O escribe *MENU* para salir)_`;
     await flowDynamic(msg);
   })
   .addAction({ capture: true }, async (ctx, { flowDynamic, state, fallBack }) => {
     const phone = ctx.from;
-    const incomingText = ctx.body.trim();
-
-    if (['menu', 'hola', 'volver'].includes(incomingText.toLowerCase())) {
-      return; // Al salir, el usuario simplemente escribe MENU y regresa al flujo principal
-    }
-
-    const answer = parseInt(incomingText);
+    const incomingText = ctx.body.trim().toLowerCase();
     const currentTrivia = state.get('currentTrivia');
     
     if (!currentTrivia) return;
-    
-    if (isNaN(answer) || answer < 1 || answer > currentTrivia.options.length) {
-      return fallBack(`⚠️ *Opción inválida.* Por favor, responde únicamente con el número *1, 2 o 3* correspondientes a la trivia, o escribe *MENU* para salir.`);
+
+    // Cláusula de escape
+    if (['menu', 'hola', 'volver'].includes(incomingText)) {
+      return;
     }
-    
-    const selectedOption = currentTrivia.options[answer - 1];
-    const isCorrect = selectedOption === currentTrivia.answer;
+
+    let isCorrect = false;
+    const numericAnswer = parseInt(incomingText);
+
+    // VALIDADOR DINÁMICO HÍBRIDO
+    if (!isNaN(numericAnswer) && numericAnswer >= 1 && numericAnswer <= currentTrivia.options.length) {
+      // 1. Validación por número
+      const selectedOption = currentTrivia.options[numericAnswer - 1];
+      isCorrect = selectedOption.toLowerCase() === currentTrivia.answer.toLowerCase();
+    } else {
+      // 2. Validación por texto (ignora mayúsculas/minúsculas y acentos básicos)
+      isCorrect = incomingText === currentTrivia.answer.toLowerCase() || 
+                  currentTrivia.options.some(opt => opt.toLowerCase() === incomingText && opt.toLowerCase() === currentTrivia.answer.toLowerCase());
+    }
+
+    // Si la entrada no coincide ni con un número válido ni con texto coherente del pool, pedimos reintento
+    const opcionesValidasTexto = currentTrivia.options.map(o => o.toLowerCase());
+    const esEntradaValida = (!isNaN(numericAnswer) && numericAnswer >= 1 && numericAnswer <= currentTrivia.options.length) || 
+                            opcionesValidasTexto.includes(incomingText);
+
+    if (!esEntradaValida) {
+      return fallBack(`⚠️ *Respuesta no reconocida.*\n\nPor favor, ingresa un número (1, 2 o 3) o escribe textualmente una de las opciones.\n\n_(O escribe *MENU* para cancelar)_`);
+    }
     
     if (isCorrect) {
       const nuevaLocura = await locuraService.updateLocura(phone, 10);
-      await flowDynamic(`✅ *¡CORRECTO!* 🎉\n\n${currentTrivia.explanation}\n\n🏆 Ganaste +10 pts de locura.\n📈 Tu nuevo nivel: ${nuevaLocura}/100 pts\n\n_Escribe *MENU* para regresar a las opciones principales._`);
+      await flowDynamic(`✅ *¡CORRECTO!* 🎉\n\n${currentTrivia.explanation}\n\n🏆 Ganaste +10 pts de locura.\n📈 Tu nuevo nivel: ${nuevaLocura}/100 pts\n\n_Escribe *MENU* para regresar al inicio._`);
     } else {
-      await flowDynamic(`❌ *INCORRECTO*\n\nLa respuesta era: *${currentTrivia.answer}*\n${currentTrivia.explanation}\n\n_Escribe *MENU* para volver al inicio._`);
+      await flowDynamic(`❌ *INCORRECTO*\n\nLa respuesta correcta era: *${currentTrivia.answer}*\n${currentTrivia.explanation}\n\n_Escribe *MENU* para volver al inicio._`);
     }
+    
+    await state.update({ currentTrivia: null });
   });
 
 // =====================================================================
-// RANKING INDEPENDIENTE
+// OPT 2: RANKING INDEPENDIENTE
 // =====================================================================
-export const rankingFlow = addKeyword(['ejecutar_ranking_interno'])
+export const rankingFlow = addKeyword(['solicitar_ranking_interno'])
   .addAction(async (ctx, { flowDynamic }) => {
     const ranking = await locuraService.getRanking(10);
     
     if (ranking.length === 0) {
-      await flowDynamic(`🏆 *RANKING DE LOCURA MUNDIALISTA* 🏆\n\nAún no hay usuarios en el ranking.\n¡Sé el primero en participar!\n\n💡 Elige la opción *1* para empezar.`);
+      await flowDynamic(`🏆 *RANKING DE LOCURA MUNDIALISTA* 🏆\n\nAún no hay usuarios en el ranking.\n¡Sé el primero en participar!`);
       return;
     }
     
     let rankingMsg = '🏆 *RANKING DE LOCURA MUNDIALISTA* 🏆\n\n';
-    
     ranking.forEach((u, i) => {
       const medalla = i === 0 ? '👑' : i === 1 ? '🥈' : i === 2 ? '🥉' : '📌';
-      const nombreMostrar = u.name && u.name !== u.phone.slice(-8) ? u.name : `Fanático ${u.phone.slice(-4)}`;
+      // Muestra el nombre real si ya lo cambió, de lo contrario su alias de Fanático
+      const nombreMostrar = u.name && !u.name.includes(u.phone.slice(-4)) ? u.name : `Fanático ${u.phone.slice(-4)}`;
       rankingMsg += `${medalla} ${i+1}. *${nombreMostrar}* - ${u.locura} pts\n`;
     });
     
-    rankingMsg += `\n💡 *Tip:* Participá en las trivias y predicciones para subir!\n\n_Escribe *MENU* para regresar._`;
+    rankingMsg += `\n💡 *Tip:* Participa en trivias y predicciones para subir.\n\n_Escribe *MENU* para regresar._`;
     await flowDynamic(rankingMsg);
   });
