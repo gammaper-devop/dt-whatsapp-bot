@@ -21,11 +21,17 @@ function parsePredictionHumana(text: string): any {
   return null;
 }
 
+// Reemplaza la función parseConsultaIA en tu adivino.flow.ts por esta versión:
 function parseConsultaIA(text: string): { eq1: string; eq2: string } | null {
-  const regex = /([a-zA-Z\s]+?)\s+(?:vs|-|\s)\s*([a-zA-Z\s]+)/i;
+  // Añadimos \. para que capture las siglas con puntos de forma impecable
+  const regex = /([a-zA-Z\s\.]+?)\s+(?:vs|-)\s*([a-zA-Z\s\.]+)/i;
   const match = text.match(regex);
+  
   if (match) {
-    return { eq1: match[1].trim(), eq2: match[2].trim() };
+    return {
+      eq1: match[1].trim(),
+      eq2: match[2].trim()
+    };
   }
   return null;
 }
@@ -87,7 +93,7 @@ export const adivinoFlow = addKeyword(['solicitar_predigo_interno'])
 // =====================================================================
 export const iaConsultarFlow = addKeyword(['solicitar_ia_interna'])
   .addAction(async (ctx, { flowDynamic }) => {
-    await flowDynamic(`🧠 *EL CONSULTOR ANALÍTICO IA* 🧠\n\n¿Qué partido quieres que procese el algoritmo *Random Forest*?\n\n✍️ *Escríbelo así:*\n👉 \`Colombia vs Uzbekistan\`\n👉 \`Argentina - Argelia\`\n\n_Escribe los equipos a consultar:_`);
+    await flowDynamic(`🧠 *EL CONSULTOR ANALÍTICO IA* 🧠\n\n¿Qué partido quieres que procese el algoritmo?\n\n✍️ *Escríbelo así:*\n👉 \`Colombia vs Uzbekistan\`\n👉 \`Argentina - Argelia\`\n\n_Escribe los equipos a consultar:_`);
   })
   .addAction({ capture: true }, async (ctx, { flowDynamic, fallBack }) => {
     const message = ctx.body.trim();

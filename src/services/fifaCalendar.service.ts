@@ -16,10 +16,10 @@ export class FifaCalendarService {
 
   private cargarPartidos(): void {
     try {
-      let jsonPath = path.join(__dirname, '../../../../mundial_chatbot/base-ts-baileys-memory/data/worldcup2026.json');
+      let jsonPath = path.join(__dirname, '../../../../mundial_chatbot/base-ts-baileys-memory/data/worldcup2026_spanish.json');
       
       if (!fs.existsSync(jsonPath)) {
-        jsonPath = path.join(process.cwd(), 'data', 'worldcup2026.json');
+        jsonPath = path.join(process.cwd(), 'data', 'worldcup2026_spanish.json');
       }
       
       console.log('📂 Buscando calendario en:', jsonPath);
@@ -39,14 +39,16 @@ export class FifaCalendarService {
           const horaMatch = match.time.match(/(\d{2}):(\d{2})/);
           if (horaMatch) {
             fechaHora = new Date(match.date);
+            // Ajustamos horas UTC-6 o UTC-4 de manera segura
             fechaHora.setHours(parseInt(horaMatch[1]), parseInt(horaMatch[2]), 0);
           }
         }
         
-        const isKnockout = !['Matchday 1', 'Matchday 2', 'Matchday 3', 'Matchday 4', 'Matchday 5', 
-                              'Matchday 6', 'Matchday 7', 'Matchday 8', 'Matchday 9', 'Matchday 10',
-                              'Matchday 11', 'Matchday 12', 'Matchday 13', 'Matchday 14', 'Matchday 15',
-                              'Matchday 16', 'Matchday 17'].includes(match.round);
+        // CORRECCIÓN: Ahora validamos contra "Jornada" que es el término de tu JSON traducido
+        const isKnockout = !['Jornada 1', 'Jornada 2', 'Jornada 3', 'Jornada 4', 'Jornada 5', 
+                              'Jornada 6', 'Jornada 7', 'Jornada 8', 'Jornada 9', 'Jornada 10',
+                              'Jornada 11', 'Jornada 12', 'Jornada 13', 'Jornada 14', 'Jornada 15',
+                              'Jornada 16', 'Jornada 17'].includes(match.round);
         
         return {
           id: match.num || `${match.round}_${match.team1}_${match.team2}`,
@@ -63,6 +65,7 @@ export class FifaCalendarService {
       });
       
       // Organizar por grupos
+      this.grupos = {}; // Reset por seguridad
       this.partidos.forEach(match => {
         if (match.group && !match.isKnockout) {
           if (!this.grupos[match.group]) this.grupos[match.group] = [];
@@ -87,16 +90,17 @@ export class FifaCalendarService {
     return dateStr;
   }
 
+  // CORRECCIÓN: Ajustamos la expresión regular para que entienda "Jornada" en español
   private getMatchdayNumber(round: string): number {
-    const match = round.match(/Matchday (\d+)/);
+    const match = round.match(/Jornada (\d+)/i);
     if (match) {
       return parseInt(match[1]);
     }
-    if (round.includes('Round of 32')) return 100;
-    if (round.includes('Round of 16')) return 101;
-    if (round.includes('Quarter-final')) return 102;
-    if (round.includes('Semi-final')) return 103;
-    if (round.includes('Match for third place')) return 104;
+    if (round.includes('Dieciseisavos de final')) return 100;
+    if (round.includes('Octavos de final')) return 101;
+    if (round.includes('Cuartos de final')) return 102;
+    if (round.includes('Semifinal')) return 103;
+    if (round.includes('Partido por el tercer puesto')) return 104;
     if (round.includes('Final')) return 105;
     return 999;
   }
@@ -105,6 +109,7 @@ export class FifaCalendarService {
   
   getProximosPartidos(cantidad: number = 5): Match[] {
     const ahora = new Date();
+    // Filtramos los partidos del JSON que tengan fecha válida posterior a la simulación actual
     const futuros = this.partidos.filter(p => p.fechaHora && p.fechaHora > ahora);
     
     if (futuros.length === 0) {
@@ -139,7 +144,7 @@ export class FifaCalendarService {
   
   formatearListaProximos(partidos: Match[]): string {
     if (partidos.length === 0) {
-      return '📭 No hay partidos próximos programados. ¡El mundial ya terminó o aún no comenzó!';
+      return '📭 No hay partidos próximos programados.';
     }
     
     let mensaje = '⚽ *PRÓXIMOS PARTIDOS* ⚽\n\n';
@@ -152,13 +157,11 @@ export class FifaCalendarService {
       mensaje += `   ⏰ ${p.time}\n`;
       mensaje += `   🏟️ ${p.ground}\n`;
       if (p.group) {
-        const nombreGrupo = p.group.replace('Group', 'Grupo');
-        mensaje += `   📌 ${nombreGrupo}\n`;
+        mensaje += `   📌 ${p.group}\n`;
       }
       mensaje += '\n';
     });
     
-    mensaje += '💡 *Tip:* Usá `PREDIGO [equipo1] [goles] - [goles] [equipo2]` para pronosticar.';
     return mensaje;
   }
 
@@ -177,13 +180,11 @@ export class FifaCalendarService {
         equiposEnGrupo.add(p.team2);
       });
       
-      const nombreGrupo = grupo.replace('Group', 'Grupo');
-      mensaje += `*${nombreGrupo}:* ${Array.from(equiposEnGrupo).join(', ')}\n`;
+      mensaje += `*${grupo}:* ${Array.from(equiposEnGrupo).join(', ')}\n`;
     }
     
     mensaje += `\n📊 *Total: ${equipos.length} selecciones participantes*\n`;
-    mensaje += `🌍 *Continentes:* América (Norte, Centro, Sur), Europa, África, Asia, Oceanía\n`;
-    mensaje += `\n💡 *Tip:* Escribí "PROXIMOS" para ver los próximos partidos.`;
+    mensaje += `🌍 *Sedes:* México, Estados Unidos y Canadá\n`;
     
     return mensaje;
   }
@@ -191,7 +192,6 @@ export class FifaCalendarService {
   // ============ MÉTODOS PARA CALENDARIO COMPLETO ============
   
   getCalendarioCompleto(): string {
-    // Ordenar partidos por número de jornada
     const partidosOrdenados = [...this.partidos];
     
     partidosOrdenados.sort((a, b) => {
@@ -216,8 +216,7 @@ export class FifaCalendarService {
       if (partido.round !== rondaActual) {
         rondaActual = partido.round;
         const emoji = this.getEmojiPorRonda(rondaActual);
-        const nombreRonda = this.formatearNombreRonda(rondaActual);
-        calendario += `\n${emoji} *${nombreRonda}*\n`;
+        calendario += `\n${emoji} *${rondaActual.toUpperCase()}*\n`;
       }
       
       const fechaFormateada = this.formatearFecha(partido.date);
@@ -225,55 +224,25 @@ export class FifaCalendarService {
       calendario += `  ⏰ ${partido.time} | 🏟️ ${partido.ground}\n`;
       contador++;
       
-      if (contador > 50 && calendario.length > 1500) {
+      if (contador > 45 && calendario.length > 1500) {
         const restantes = this.partidos.length - contador;
-        calendario += `\n📌 *Y ${restantes} partidos más...*\n`;
-        calendario += `💡 Escribí "PROXIMOS" para ver los próximos partidos.`;
+        calendario += `\n📌 *Y ${restantes} partidos más en el fixture...*\n`;
         break;
       }
     }
     
-    calendario += `\n\n📊 *Total: ${this.partidos.length} partidos*`;
+    calendario += `\n📊 *Total: ${this.partidos.length} partidos oficiales*`;
     return calendario;
   }
 
   private getEmojiPorRonda(ronda: string): string {
-    if (ronda.includes('Matchday')) return '📋';
-    if (ronda.includes('Round of 32')) return '🔰';
-    if (ronda.includes('Round of 16')) return '🔰';
-    if (ronda.includes('Quarter-final')) return '🏆';
-    if (ronda.includes('Semi-final')) return '🏆';
+    if (ronda.includes('Jornada')) return '📋';
+    if (ronda.includes('Dieciseisavos')) return '🔰';
+    if (ronda.includes('Octavos')) return '🔰';
+    if (ronda.includes('Cuartos')) return '🏆';
+    if (ronda.includes('Semifinal')) return '🏆';
     if (ronda.includes('Final')) return '🏆👑';
-    if (ronda.includes('Match for third place')) return '🥉';
+    if (ronda.includes('tercer puesto')) return '🥉';
     return '⚽';
-  }
-
-  private formatearNombreRonda(ronda: string): string {
-    const nombres: { [key: string]: string } = {
-      'Matchday 1': '📋 JORNADA 1',
-      'Matchday 2': '📋 JORNADA 2',
-      'Matchday 3': '📋 JORNADA 3',
-      'Matchday 4': '📋 JORNADA 4',
-      'Matchday 5': '📋 JORNADA 5',
-      'Matchday 6': '📋 JORNADA 6',
-      'Matchday 7': '📋 JORNADA 7',
-      'Matchday 8': '📋 JORNADA 8',
-      'Matchday 9': '📋 JORNADA 9',
-      'Matchday 10': '📋 JORNADA 10',
-      'Matchday 11': '📋 JORNADA 11',
-      'Matchday 12': '📋 JORNADA 12',
-      'Matchday 13': '📋 JORNADA 13',
-      'Matchday 14': '📋 JORNADA 14',
-      'Matchday 15': '📋 JORNADA 15',
-      'Matchday 16': '📋 JORNADA 16',
-      'Matchday 17': '📋 JORNADA 17',
-      'Round of 32': '🔰 OCTAVOS DE FINAL',
-      'Round of 16': '🔰 CUARTOS DE FINAL',
-      'Quarter-final': '🏆 CUARTOS DE FINAL',
-      'Semi-final': '🏆 SEMIFINALES',
-      'Match for third place': '🥉 TERCER PUESTO',
-      'Final': '🏆👑 GRAN FINAL'
-    };
-    return nombres[ronda] || ronda;
   }
 }
