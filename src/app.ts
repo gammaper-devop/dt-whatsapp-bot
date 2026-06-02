@@ -11,7 +11,8 @@ import mongoose from 'mongoose';
 
 // Importar flujos del mundial
 import { welcomeFlow } from './flows/welcome.flow';
-import { hinchaRecordFlow, rankingFlow } from './flows/hinchaRecord.flow';
+import { hinchaRecordFlow } from './flows/hinchaRecord.flow';
+import { rankingFifaFlow } from './flows/rankingFifa.flow';
 import { abuelaMundialistaFlow } from './flows/abuelaMundialista.flow';
 import { adivinoFlow, iaConsultarFlow } from './flows/adivino.flow';
 import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
@@ -44,13 +45,11 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
     
     await flowDynamic(`🎉 *¡BIENVENIDO AL TERMÓMETRO DEL MUNDIAL, ${userName.toUpperCase()}!* 🎉
 
-Yo soy *El DT*, tu asistente de emociones futboleras.
-
-⚽ *Tu nivel de locura: ${user.locura}/100 pts*
+"¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖",
 
 *Comandos disponibles:*
 1. *TRIVIA* - Poné a prueba tus conocimientos 🧠
-2. *RANKING* - Ver la tabla de los más locos 🏆
+2. *RANKING* - Consulta el ranking FiFA 2026 🏆
 3. *TRISTE* - La abuela te consuela (cuando perdés) 👵
 4. *PREDIGO* - Juega tus propios pronósticos 🔮
 5. *IA* - Consulta la predicción de nuestra IA 🧠
@@ -78,7 +77,7 @@ ${partidosTexto}
       case '1':
         return gotoFlow(hinchaRecordFlow); // Ejecuta Trivia de forma aislada
       case '2':
-        return gotoFlow(rankingFlow); // Ejecuta Ranking de forma aislada
+        return gotoFlow(rankingFifaFlow); // Ejecuta Ranking de forma aislada
       case '3':
         return gotoFlow(abuelaMundialistaFlow);
       case '4':
@@ -111,7 +110,7 @@ const main = async () => {
     mainFlow,
     welcomeFlow,
     hinchaRecordFlow,      // Se activa directo con la opción 1
-    rankingFlow,           // Nueva constante independiente para la opción 2!
+    rankingFifaFlow,       
     abuelaMundialistaFlow, // Se activa directo con la opción 3
     adivinoFlow,           // Opción 4
     iaConsultarFlow,       // Opción 5
@@ -149,7 +148,7 @@ const main = async () => {
   console.log('📱 Escaneá el QR para conectar WhatsApp');
   console.log('\n📋 *Comandos disponibles:*');
   console.log('   • TRIVIA - Poné a prueba tus conocimientos');
-  console.log('   • RANKING - Tabla de los más locos');
+  console.log('   • RANKING - Consulta el ranking FiFA 2026');
   console.log('   • TRISTE - Consuelo de la abuela');
   console.log('   • PREDIGO - Pronostica resultados');
   console.log('   • PROXIMOS - Próximos partidos');

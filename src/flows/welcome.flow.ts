@@ -24,13 +24,11 @@ export const welcomeFlow = addKeyword(EVENTS.WELCOME)
     
     await flowDynamic(`🎉 *¡BIENVENIDO AL TERMÓMETRO DEL MUNDIAL, ${userName.toUpperCase()}!* 🎉
 
-Yo soy *El DT*, tu asistente de emociones futboleras.
-
-⚽ *Tu nivel de locura: ${user.locura}/100 pts*
+"¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖",
 
 *Comandos disponibles:*
 1. *TRIVIA* - Pon a prueba tus conocimientos 🧠
-2. *RANKING* - Ver la tabla de los más locos 🏆
+2. *RANKING* - Consulta el ranking FiFA 2026 🏆
 3. *TRISTE* - La abuela te consuela (cuando perdés) 👵
 4. *PREDIGO* - Juega tus propios pronósticos 🔮
 5. *IA* - Consulta la predicción de nuestra IA 🧠
