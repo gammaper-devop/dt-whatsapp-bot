@@ -1,294 +1,169 @@
 {
-    "name": "Ranking FIFA 2026",
-    "equipos": 
-    [
-        {
-            "id": 1,
-            "pais": "Mexico",
+    "name": "Ranking FIFA 2025 - 2026",
+    "equipos": [
+      {
+        "pais": "Mexico",
+        "historial": [
+          {
+            "fecha": "2025-09-18",
+            "puesto": 14,
+            "incremento": -0.92,
+            "puntaje": 1688.38
+          },
+          {
+            "fecha": "2025-10-17",
+            "puesto": 14,
+            "incremento": -0.90,
+            "puntaje": 1682.52
+          },
+          {
+            "fecha": "2025-11-19",
+            "puesto": 15,
             "incremento": -6.73,
             "puntaje": 1675.75
-        },
-        {
-            "id": 2,
-            "pais": "Sudafrica",
-            "incremento": 0.00,
-            "puntaje": 1432.76
-        },
-        {
-            "id": 3,
-            "pais": "Corea del Sur",
+          },
+          {
+            "fecha": "2025-12-22",
+            "puesto": 15,
+            "incremento": -6.73,
+            "puntaje": 1675.75
+          },
+          {
+            "fecha": "2026-01-19",
+            "puesto": 16,
+            "incremento": -6.73,
+            "puntaje": 1675.75
+          },
+          {
+            "fecha": "2026-04-10",
+            "puesto": 15,
+            "incremento": -6.73,
+            "puntaje": 1675.75
+          }
+        ]
+      },
+      {
+        "pais": "Sudafrica",
+        "historial": [
+            {
+                "fecha": "2025-09-18",
+                "puesto": 55,
+                "incremento": 0.89,
+                "puntaje": 1448.67
+              },
+              {
+                "fecha": "2025-10-17",
+                "puesto": 59,
+                "incremento": 6.13,
+                "puntaje": 1423.17
+              },
+              {
+                "fecha": "2025-11-19",
+                "puesto": 61,
+                "incremento": 3.56,
+                "puntaje": 1426.73
+              },
+              {
+                "fecha": "2025-12-22",
+                "puesto": 61,
+                "incremento": 3.56,
+                "puntaje": 1426.73
+              },
+              {
+                "fecha": "2026-01-19",
+                "puesto": 60,
+                "incremento": 0.00,
+                "puntaje": 1432.76
+              },
+              {
+                "fecha": "2026-04-10",
+                "puesto": 60,
+                "incremento": -4.03,
+                "puntaje": 1429.73
+              }
+        ]
+      },
+      {
+        "pais": "Corea del Sur",
+        "historial": [
+          {
+            "fecha": "2025-09-18",
+            "puesto": 23,
+            "incremento": 0.92,
+            "puntaje": 1593.19
+          },
+          {
+            "fecha": "2025-10-17",
+            "puesto": 22,
+            "incremento": 4.17,
+            "puntaje": 1593.92
+          },
+          {
+            "fecha": "2025-11-19",
+            "puesto": 22,
             "incremento": 2.83,
             "puntaje": 1599.45
-        },
-        {
-            "id": 4,
-            "pais": "Republica Checa",
+          },
+          {
+            "fecha": "2025-12-22",
+            "puesto": 22,
+            "incremento": 2.83,
+            "puntaje": 1599.45
+          },
+          {
+            "fecha": "2026-01-19",
+            "puesto": 22,
+            "incremento": 2.83,
+            "puntaje": 1599.45
+          },
+          {
+            "fecha": "2026-04-10",
+            "puesto": 25,
+            "incremento": -5.05,
+            "puntaje": 1588.66
+          }
+        ]
+      },
+      {
+        "pais": "Republica Checa",
+        "historial": [
+          {
+            "fecha": "2025-09-18",
+            "puesto": 39,
+            "incremento": -0.77,
+            "puntaje": 1500.29
+          },
+          {
+            "fecha": "2025-10-17",
+            "puesto": 44,
+            "incremento": -2.47,
+            "puntaje": 1484.68
+          },
+          {
+            "fecha": "2025-11-19",
+            "puesto": 44,
             "incremento": 1.80,
             "puntaje": 1487.00
-        },
-        {
-            "id": 5,
-            "pais": "Canada",
-            "incremento": 4.19,
-            "puntaje": 1559.15
-        },
-        {
-            "id": 6,
-            "pais": "Bosnia y Herzegovina",
-            "incremento": 5.26,
-            "puntaje": 1362.37
-        },
-        {
-            "id": 7,
-            "pais": "Catar",
-            "incremento": -2.38,
-            "puntaje": 1454.96
-        },
-        {
-            "id": 8,
-            "pais": "Suiza",
-            "incremento": -7.49,
-            "puntaje": 1654.69
-        },
-        {
-            "id": 9,
-            "pais": "Brasil",
-            "incremento": -2.37,
-            "puntaje": 1760.46
-        },
-        {
-            "id": 10,
-            "pais": "Marruecos",
-            "incremento": 18.02,
-            "puntaje": 1736.57
-        },
-        {
-            "id": 11,
-            "pais": "Haiti",
-            "incremento": 8.78,
-            "puntaje": 1294.49
-        },
-        {
-            "id": 12,
-            "pais": "Escocia",
-            "incremento": 15.82,
-            "puntaje": 1506.34
-        },
-        {
-            "id": 13,
-            "pais": "EE.UU",
-            "incremento": 5.01,
-            "puntaje": 1681.88
-        },
-        {
-            "id": 14,
-            "pais": "Paraguay",
-            "incremento": 6.73,
-            "puntaje": 1501.50
-        },
-        {
-            "id": 15,
-            "pais": "Australia",
-            "incremento": -3.87,
-            "puntaje": 1574.01
-        },
-        {
-            "id": 16,
-            "pais": "Turquia",
-            "incremento": 6.63,
-            "puntaje": 1582.69
-        },
-        {
-            "id": 17,
-            "pais": "Alemania",
-            "incremento": 7.44,
-            "puntaje": 1724.15
-        },
-        {
-            "id": 18,
-            "pais": "Curazao",
-            "incremento": 1.50,
-            "puntaje": 1302.70
-        },
-        {
-            "id": 19,
-            "pais": "Costa de Marfil",
-            "incremento": 0.00,
-            "puntaje": 1522.48
-        },
-        {
-            "id": 20,
-            "pais": "Ecuador",
-            "incremento": 2.35,
-            "puntaje": 1591.73
-        },
-        {
-            "id": 21,
-            "pais": "Paises Bajos",
-            "incremento": 1.61,
-            "puntaje": 1756.27
-        },
-        {
-            "id": 22,
-            "pais": "Japon",
-            "incremento": 2.29,
-            "puntaje": 1650.12
-        },
-        {
-            "id": 23,
-            "pais": "Suecia",
-            "incremento": -1.00,
-            "puntaje": 1487.13
-        },
-        {
-            "id": 24,
-            "pais": "Tunez",
-            "incremento": 0.00,
-            "puntaje": 1479.04
-        },
-        {
-            "id": 25,
-            "pais": "Belgica",
-            "incremento": 0.69,
-            "puntaje": 1730.71
-        },
-        {
-            "id": 26,
-            "pais": "Egipto",
-            "incremento": 0.62,
-            "puntaje": 1556.71
-        },
-        {
-            "id": 27,
-            "pais": "Iran",
-            "incremento": -1.49,
-            "puntaje": 1617.02
-        },
-        {
-            "id": 28,
-            "pais": "Nueva Zelanda",
-            "incremento": -2.35,
-            "puntaje": 1279.25
-        },
-        {
-            "id": 29,
-            "pais": "España",
-            "incremento": -6.63,
-            "puntaje": 1877.18
-        },
-        {
-            "id": 30,
-            "pais": "Cabo Verde",
-            "incremento": 1.43,
-            "puntaje": 1370.49
-        },
-        {
-            "id": 31,
-            "pais": "Arabia Saudi",
-            "incremento": -0.28,
-            "puntaje": 1429.48
-        },
-        {
-            "id": 32,
-            "pais": "Uruguay",
-            "incremento": -5.01,
-            "puntaje": 1672.62
-        },
-        {
-            "id": 33,
-            "pais": "Francia",
-            "incremento": 1.41,
-            "puntaje": 1870.00
-        },
-        {
-            "id": 34,
-            "pais": "Senegal",
-            "incremento": 0.00,
-            "puntaje": 1706.83
-        },
-        {
-            "id": 35,
-            "pais": "Irak",
-            "incremento": -2.73,
-            "puntaje": 1436.94
-        },
-        {
-            "id": 36,
-            "pais": "Noruega",
-            "incremento": 16.70,
-            "puntaje": 1553.14
-        },
-        {
-            "id": 37,
-            "pais": "Argentina",
-            "incremento": 0.89,
-            "puntaje": 1873.33
-        },
-        {
-            "id": 38,
-            "pais": "Argelia",
-            "incremento": 0.00,
-            "puntaje": 1560.91
-        },
-        {
-            "id": 39,
-            "pais": "Austria",
-            "incremento": -5.26,
-            "puntaje": 1585.51
-        },
-        {
-            "id": 40,
-            "pais": "Jordania",
-            "incremento": -1.04,
-            "puntaje": 1388.93
-        },
-        {
-            "id": 41,
-            "pais": "Portugal",
-            "incremento": 2.62,
-            "puntaje": 1760.38
-        },
-        {
-            "id": 42,
-            "pais": "Congo",
-            "incremento": -2.28,
-            "puntaje": 1105.96
-        },
-        {
-            "id": 43,
-            "pais": "Uzbekistan",
-            "incremento": 3.99,
-            "puntaje": 1462.03
-        },
-        {
-            "id": 44,
-            "pais": "Colombia",
-            "incremento": 3.87,
-            "puntaje": 1701.30
-        },
-        {
-            "id": 45,
-            "pais": "Inglaterra",
-            "incremento": 4.09,
-            "puntaje": 1834.12
-        },
-        {
-            "id": 46,
-            "pais": "Croacia",
-            "incremento": 4.28,
-            "puntaje": 1716.88
-        },
-        {
-            "id": 47,
-            "pais": "Ghana",
-            "incremento": -2.83,
-            "puntaje": 1351.09
-        },
-        {
-            "id": 48,
-            "pais": "Panama",
-            "incremento": -0.96,
-            "puntaje": 1539.47
-        }
+          },
+          {
+            "fecha": "2025-12-22",
+            "puesto": 44,
+            "incremento": 1.80,
+            "puntaje": 1487.00
+          },
+          {
+            "fecha": "2026-01-19",
+            "puesto": 43,
+            "incremento": 1.80,
+            "puntaje": 1487.00
+          },
+          {
+            "fecha": "2026-04-10",
+            "puesto": 41,
+            "incremento": 9.35,
+            "puntaje": 1501.38
+          }
+        ]
+      }
     ]
-}
+  }

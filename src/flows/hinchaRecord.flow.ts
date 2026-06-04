@@ -1,7 +1,9 @@
 import { addKeyword } from '@builderbot/bot';
 import { LocuraService } from '../services/locura.service';
 
-// Banco de preguntas expandido
+// =====================================================================
+// BANCO DE PREGUNTAS EXPANDIDO (HISTORIA DE LOS MUNDIALES)
+// =====================================================================
 const triviaQuestions = [
   {
     question: "¿Quién ganó el Mundial 2018?",
@@ -32,6 +34,66 @@ const triviaQuestions = [
     options: ["México", "Canadá", "Estados Unidos"],
     answer: "Estados Unidos",
     explanation: "La final se jugará en el MetLife Stadium de Nueva Jersey, Estados Unidos."
+  },
+  {
+    question: "¿Qué jugador ostenta el récord de ganar más Copas del Mundo?",
+    options: ["Pelé", "Maradona", "Zinedine Zidane"],
+    answer: "Pelé",
+    explanation: "O Rei Pelé es el único jugador en la historia que ganó 3 mundiales: 1958, 1962 y 1970."
+  },
+  {
+    question: "¿Quién es el jugador más joven en anotar en un Mundial?",
+    options: ["Kylian Mbappé", "Pelé", "Gavi"],
+    answer: "Pelé",
+    explanation: "Pelé anotó contra Gales en Suecia 1958 con solo 17 años y 239 días."
+  },
+  {
+    question: "¿Qué país africano fue el primero en llegar a una semifinal en Qatar 2022?",
+    options: ["Camerún", "Senegal", "Marruecos"],
+    answer: "Marruecos",
+    explanation: "Marruecos hizo historia al convertirse en la primera selección de África en semifinales."
+  },
+  {
+    question: "¿Qué selección europea ganó el Mundial de Sudáfrica 2010?",
+    options: ["Holanda", "España", "Alemania"],
+    answer: "España",
+    explanation: "España se coronó campeona por primera vez gracias al gol agónico de Andrés Iniesta en la prórroga."
+  },
+  {
+    question: "¿En qué país se celebró el primer Mundial de la historia en 1930?",
+    options: ["Argentina", "Uruguay", "Francia"],
+    answer: "Uruguay",
+    explanation: "Uruguay fue el anfitrión y también el primer campeón del mundo tras vencer a Argentina."
+  },
+  {
+    question: "¿Qué histórico portero no recibió ningún gol en todo el Mundial de Alemania 2006?",
+    options: ["Gianluigi Buffon", "Iker Casillas", "Pascal Zuberbühler"],
+    answer: "Pascal Zuberbühler",
+    explanation: "El portero de Suiza fue eliminado en octavos en penales sin haber recibido un solo gol en tiempo regular."
+  },
+  {
+    question: "¿Quién anotó el gol de la victoria para Alemania en la final del Mundial 2014?",
+    options: ["Mario Götze", "Thomas Müller", "Miroslav Klose"],
+    answer: "Mario Götze",
+    explanation: "Götze anotó en el minuto 113 de la prórroga asegurando el 1-0 definitivo contra Argentina."
+  },
+  {
+    question: "¿Cuál es el jugador con más partidos jugados en la historia de los Mundiales?",
+    options: ["Lothar Matthäus", "Lionel Messi", "Cristiano Ronaldo"],
+    answer: "Lionel Messi",
+    explanation: "Messi alcanzó los 26 partidos disputados tras jugar la gran final de Qatar 2022."
+  },
+  {
+    question: "¿Qué país organizó el Mundial de 1994, rompiendo récords de asistencia?",
+    options: ["Francia", "Estados Unidos", "Italia"],
+    answer: "Estados Unidos",
+    explanation: "EE.UU. 1994 promedió casi 69,000 espectadores por partido, récord vigente hasta hoy."
+  },
+  {
+    question: "¿Qué particularidad tuvo el balón 'Jabulani' del Mundial 2010?",
+    options: ["Tenía un chip interno", "Era completamente negro", "Era criticado por su trayectoria impredecible"],
+    answer: "Era criticado por su trayectoria impredecible",
+    explanation: "Porteros y delanteros se quejaron amargamente de sus movimientos extraños en el aire de Sudáfrica."
   }
 ];
 
@@ -86,7 +148,7 @@ export const hinchaRecordFlow = addKeyword(['solicitar_trivia_interna'])
     
     if (isCorrect) {
       const nuevaLocura = await locuraService.updateLocura(phone, 10);
-      await flowDynamic(`✅ *¡CORRECTO!* 🎉\n\n${currentTrivia.explanation}\n\n🏆 Ganaste +10 pts de locura.\n📈 Tu nuevo nivel: ${nuevaLocura}/100 pts\n\n_Escribe *MENU* para regresar al inicio._`);
+      await flowDynamic(`✅ *¡CORRECTO!* 🎉\n\n${currentTrivia.explanation}\n\n🏆 _Escribe *MENU* para regresar al inicio._`);
     } else {
       await flowDynamic(`❌ *INCORRECTO*\n\nLa respuesta correcta era: *${currentTrivia.answer}*\n${currentTrivia.explanation}\n\n_Escribe *MENU* para volver al inicio._`);
     }

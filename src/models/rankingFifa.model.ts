@@ -4,8 +4,13 @@ export interface RankingFifa {
 }
 
 export interface RankingFifaEquipo {
-  id: number;
-  pais: string;
-  incremento: number;
-  puntaje: number;
+  "pais": string;
+  "historial": Historial[];
+}
+
+export interface Historial {
+  "fecha": string;
+  "puesto": number;
+  "incremento": number;
+  "puntaje": number;
 }
