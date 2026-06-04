@@ -15,7 +15,7 @@ import { hinchaRecordFlow } from './flows/hinchaRecord.flow';
 import { rankingFifaFlow } from './flows/rankingFifa.flow';
 import { adivinoFlow, iaConsultarFlow } from './flows/adivino.flow';
 import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
-import { perfilFlow } from './flows/perfil.flow';
+import { suscripcionFlow } from './flows/suscripcion.flow';
 
 const PORT = process.env.PORT ?? 3008;
 
@@ -54,7 +54,7 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
 5. *PROXIMOS* - Próximos partidos ⚽
 6. *EQUIPOS* - Todas las selecciones 🌍
 7. *CALENDARIO* - Partidos completos 📅
-8. *PERFIL* - Configura tu perfil 👤
+8. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
 
 ${partidosTexto}
 
@@ -87,7 +87,7 @@ ${partidosTexto}
       case '7':
         return gotoFlow(calendarioFlow);
       case '8':
-        return gotoFlow(perfilFlow);
+        return gotoFlow(suscripcionFlow);
     }
   });
 
@@ -112,7 +112,7 @@ const main = async () => {
     proximosFlow,          // Opción 6 calendario.flow
     equiposFlow,           // Opción 7 calendario.flow
     calendarioFlow,        // Opción 8 calendario.flow
-    perfilFlow             // Opción 9 perfil.flow
+    suscripcionFlow        
   ]);
   
   const adapterProvider = createProvider(Provider, { 

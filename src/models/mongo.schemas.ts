@@ -5,6 +5,7 @@ export interface IUser extends Document {
   phone: string;
   name: string;
   locura: number;
+  email?: string;
   equipoFavorito?: string;
   lastActive: number;
 }
@@ -24,6 +25,7 @@ export interface IPrediction extends Document {
 const UserSchema: Schema = new Schema({
   phone: { type: String, required: true, unique: true },
   name: { type: String, required: true },
+  email: { type: String, default: null },
   locura: { type: Number, default: 50 },
   equipoFavorito: { type: String },
   lastActive: { type: Number, default: Date.now }

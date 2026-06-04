@@ -16,6 +16,7 @@ export interface Prediction {
     predictionsHistory: Prediction[];
     equipoFavorito: string;
     name: string;
+    email?: string;
     matchesFound: number;
     lastActive: number;
     currentTrivia?: any;

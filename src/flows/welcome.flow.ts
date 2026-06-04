@@ -34,7 +34,7 @@ export const welcomeFlow = addKeyword(EVENTS.WELCOME)
 5. *PROXIMOS* - Próximos partidos ⚽
 6. *EQUIPOS* - Todas las selecciones 🌍
 7. *CALENDARIO* - Partidos completos 📅
-8. *PERFIL* - Configura tu perfil 👤
+8. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
 
 ${partidosTexto}
 
