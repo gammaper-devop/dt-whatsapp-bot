@@ -22,20 +22,19 @@ export const welcomeFlow = addKeyword(EVENTS.WELCOME)
       ? `\n📅 *Próximos partidos:*\n${proximosPartidos.map(p => `• ${p.team1} vs ${p.team2} (${p.date})`).join('\n')}`
       : '';
     
-    await flowDynamic(`🎉 *¡BIENVENIDO AL TERMÓMETRO DEL MUNDIAL, ${userName.toUpperCase()}!* 🎉
+    await flowDynamic(`🎉 *¡BIENVENIDO AL BOT OFICIAL DEL MUNDIAL 2026, ${userName.toUpperCase()}!* 🎉
 
 "¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖",
 
 *Comandos disponibles:*
-1. *TRIVIA* - Pon a prueba tus conocimientos 🧠
-2. *RANKING* - Consulta el ranking FiFA 2026 🏆
-3. *TRISTE* - La abuela te consuela (cuando perdés) 👵
-4. *PREDIGO* - Juega tus propios pronósticos 🔮
-5. *IA* - Consulta la predicción de nuestra IA 🧠
-6. *PROXIMOS* - Próximos partidos ⚽
-7. *EQUIPOS* - Todas las selecciones 🌍
-8. *CALENDARIO* - Partidos completos 📅
-9. *PERFIL* - Configura tu perfil 👤
+1. *TRIVIA* - Poné a prueba tus conocimientos 🧠
+2. *RANKING* - Consulta el ranking FIFA 2026 🏆
+3. *PREDIGO* - Juega tus propios pronósticos 🔮
+4. *IA* - Consulta la predicción de nuestra IA 🧠
+5. *PROXIMOS* - Próximos partidos ⚽
+6. *EQUIPOS* - Todas las selecciones 🌍
+7. *CALENDARIO* - Partidos completos 📅
+8. *PERFIL* - Configura tu perfil 👤
 
 ${partidosTexto}
 

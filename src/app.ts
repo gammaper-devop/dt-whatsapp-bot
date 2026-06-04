@@ -13,7 +13,6 @@ import mongoose from 'mongoose';
 import { welcomeFlow } from './flows/welcome.flow';
 import { hinchaRecordFlow } from './flows/hinchaRecord.flow';
 import { rankingFifaFlow } from './flows/rankingFifa.flow';
-import { abuelaMundialistaFlow } from './flows/abuelaMundialista.flow';
 import { adivinoFlow, iaConsultarFlow } from './flows/adivino.flow';
 import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
 import { perfilFlow } from './flows/perfil.flow';
@@ -49,14 +48,13 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
 
 *Comandos disponibles:*
 1. *TRIVIA* - Poné a prueba tus conocimientos 🧠
-2. *RANKING* - Consulta el ranking FiFA 2026 🏆
-3. *TRISTE* - La abuela te consuela (cuando perdés) 👵
-4. *PREDIGO* - Juega tus propios pronósticos 🔮
-5. *IA* - Consulta la predicción de nuestra IA 🧠
-6. *PROXIMOS* - Próximos partidos ⚽
-7. *EQUIPOS* - Todas las selecciones 🌍
-8. *CALENDARIO* - Partidos completos 📅
-9. *PERFIL* - Configura tu perfil 👤
+2. *RANKING* - Consulta el ranking FIFA 2026 🏆
+3. *PREDIGO* - Juega tus propios pronósticos 🔮
+4. *IA* - Consulta la predicción de nuestra IA 🧠
+5. *PROXIMOS* - Próximos partidos ⚽
+6. *EQUIPOS* - Todas las selecciones 🌍
+7. *CALENDARIO* - Partidos completos 📅
+8. *PERFIL* - Configura tu perfil 👤
 
 ${partidosTexto}
 
@@ -66,10 +64,10 @@ ${partidosTexto}
     const opcion = ctx.body.trim();
     
     // Lista de opciones numéricas estrictas que permitimos procesar en el menú
-    const opcionesValidas = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const opcionesValidas = ['1', '2', '3', '4', '5', '6', '7', '8'];
     
     if (!opcionesValidas.includes(opcion)) {
-      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 9* o escribe *MENU* para volver a empezar.`);
+      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 8* o escribe *MENU* para volver a empezar.`);
     }
     
     // El enrutador ahora solo se ejecuta de forma interna y controlada tras la captura
@@ -79,18 +77,16 @@ ${partidosTexto}
       case '2':
         return gotoFlow(rankingFifaFlow); // Ejecuta Ranking de forma aislada
       case '3':
-        return gotoFlow(abuelaMundialistaFlow);
-      case '4':
         return gotoFlow(adivinoFlow);
-      case '5':
+      case '4':
         return gotoFlow(iaConsultarFlow);
-      case '6':
+      case '5':
         return gotoFlow(proximosFlow);
-      case '7':
+      case '6':
         return gotoFlow(equiposFlow);
-      case '8':
+      case '7':
         return gotoFlow(calendarioFlow);
-      case '9':
+      case '8':
         return gotoFlow(perfilFlow);
     }
   });
@@ -111,7 +107,6 @@ const main = async () => {
     welcomeFlow,
     hinchaRecordFlow,      // Se activa directo con la opción 1
     rankingFifaFlow,       
-    abuelaMundialistaFlow, // Se activa directo con la opción 3
     adivinoFlow,           // Opción 4
     iaConsultarFlow,       // Opción 5
     proximosFlow,          // Opción 6 calendario.flow
@@ -149,7 +144,6 @@ const main = async () => {
   console.log('\n📋 *Comandos disponibles:*');
   console.log('   • TRIVIA - Poné a prueba tus conocimientos');
   console.log('   • RANKING - Consulta el ranking FiFA 2026');
-  console.log('   • TRISTE - Consuelo de la abuela');
   console.log('   • PREDIGO - Pronostica resultados');
   console.log('   • PROXIMOS - Próximos partidos');
   console.log('   • EQUIPOS - Todas las selecciones');
