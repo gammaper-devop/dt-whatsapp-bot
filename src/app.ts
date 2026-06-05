@@ -42,15 +42,15 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
       ? `\n📅 *Próximos partidos:*\n${proximosPartidos.map(p => `• ${p.team1} vs ${p.team2} (${p.date})`).join('\n')}`
       : '';
     
-    await flowDynamic(`🎉 *¡BIENVENIDO AL TERMÓMETRO DEL MUNDIAL, ${userName.toUpperCase()}!* 🎉
+    await flowDynamic(`🔥 *¡BIENVENIDO A LA ZONA DE CANDELA MUNDIALISTA! 🔥, ${userName.toUpperCase()}!* 🎉
 
-"¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖",
+¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖,
 
 *Comandos disponibles:*
-1. *TRIVIA* - Poné a prueba tus conocimientos 🧠
+1. *TRIVIA* - Reta y pon a prueba tus conocimientos 🧠
 2. *RANKING* - Consulta el ranking FIFA 2026 🏆
 3. *PREDIGO* - Juega tus propios pronósticos 🔮
-4. *IA* - Consulta la predicción de nuestra IA 🧠
+4. *IA ANALÍTICA* - Consulta la predicción de nuestro cerebro artificial 🤖
 5. *PROXIMOS* - Próximos partidos ⚽
 6. *EQUIPOS* - Todas las selecciones 🌍
 7. *CALENDARIO* - Partidos completos 📅
@@ -58,7 +58,7 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
 
 ${partidosTexto}
 
-👉 _Responde directamente con el *NÚMERO* de la opción que deseas elegir:_`);
+⚡ _¿Cuál es tu primera jugada? Responde directamente con el número de tu opción:_`);
   })
   .addAction({ capture: true }, async (ctx, { gotoFlow, flowDynamic, fallBack }) => {
     const opcion = ctx.body.trim();
@@ -141,14 +141,6 @@ const main = async () => {
   
   console.log(`✅ Bot del Mundial corriendo en http://localhost:${PORT}`);
   console.log('📱 Escaneá el QR para conectar WhatsApp');
-  console.log('\n📋 *Comandos disponibles:*');
-  console.log('   • TRIVIA - Poné a prueba tus conocimientos');
-  console.log('   • RANKING - Consulta el ranking FiFA 2026');
-  console.log('   • PREDIGO - Pronostica resultados');
-  console.log('   • PROXIMOS - Próximos partidos');
-  console.log('   • EQUIPOS - Todas las selecciones');
-  console.log('   • CALENDARIO - Partidos completos');
-  console.log('   • PERFIL - Configura tu perfil');
 };
 
 main().catch(console.error);

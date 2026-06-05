@@ -19,6 +19,7 @@ export interface Prediction {
     email?: string;
     matchesFound: number;
     lastActive: number;
+    active?: boolean;
     currentTrivia?: any;
     pendingPrediction?: any;
   }

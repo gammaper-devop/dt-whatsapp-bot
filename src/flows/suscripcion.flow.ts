@@ -32,8 +32,10 @@ export const suscripcionFlow = addKeyword(['solicitar_suscripcion_interna'])
       }
 
       // Validaciones de robustez del nombre completo[cite: 12]
-      if (nombreInput.length < 3) {
-        return fallBack('⚠️ *Nombre demasiado corto.* Por favor, ingresa tu nombre completo:');
+      if (nombreInput.length < 8) {
+        return fallBack('⚠️ *Nombre demasiado corto.* Por favor, ingresa tu *Nombre Completo:*' +
+                        `\n(Ejemplo: \`Juan Palomino\`)`
+        );
       }
 
       if (nombreInput.length > 50) {
@@ -77,7 +79,8 @@ export const suscripcionFlow = addKeyword(['solicitar_suscripcion_interna'])
           $set: { 
             name: nombreGuardado,
             email: emailInput,
-            lastActive: Date.now()
+            lastActive: Date.now(),
+            active: true
           } 
         },
         { new: true, upsert: true } // Si el usuario no existe por algún motivo, lo crea (upsert)

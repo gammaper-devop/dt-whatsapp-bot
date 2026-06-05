@@ -28,7 +28,8 @@ const UserSchema: Schema = new Schema({
   email: { type: String, default: null },
   locura: { type: Number, default: 50 },
   equipoFavorito: { type: String },
-  lastActive: { type: Number, default: Date.now }
+  lastActive: { type: Number, default: Date.now },
+  active: { type: Boolean, default: true }
 });
 
 const PredictionSchema: Schema = new Schema({

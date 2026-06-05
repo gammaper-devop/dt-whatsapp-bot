@@ -164,6 +164,375 @@
             "puntaje": 1501.38
           }
         ]
+      },
+      {
+        "pais": "Canada",
+        "historial": [
+          {
+            "fecha": "2025-09-18",
+            "puesto": 26,
+            "incremento": 4.81,
+            "puntaje": 1558.04
+          },
+          {
+            "fecha": "2025-10-17",
+            "puesto": 28,
+            "incremento": 1.35,
+            "puntaje": 1554.63
+          },
+          {
+            "fecha": "2025-11-19",
+            "puesto": 27,
+            "incremento": 4.19,
+            "puntaje": 1559.15
+          },
+          {
+            "fecha": "2025-12-22",
+            "puesto": 27,
+            "incremento": 4.19,
+            "puntaje": 1559.15
+          },
+          {
+            "fecha": "2026-01-19",
+            "puesto": 29,
+            "incremento": 4.19,
+            "puntaje": 1559.15
+          },
+          {
+            "fecha": "2026-04-10",
+            "puesto": 30,
+            "incremento": -0.71,
+            "puntaje": 1556.58
+          }
+        ]
+      },
+      {
+        "pais": "Bosnia y Herzegovina",
+        "historial": [
+          {
+            "fecha": "2025-09-18",
+            "puesto": 73,
+            "incremento": -7.05,
+            "puntaje": 1344.25
+          },
+          {
+            "fecha": "2025-10-17",
+            "puesto": 75,
+            "incremento": 2.01,
+            "puntaje": 1341.36
+          },
+          {
+            "fecha": "2025-11-19",
+            "puesto": 71,
+            "incremento": 5.26,
+            "puntaje": 1362.37
+          },
+          {
+            "fecha": "2025-12-22",
+            "puesto": 71,
+            "incremento": 5.26,
+            "puntaje": 1362.37
+          },
+          {
+            "fecha": "2026-01-19",
+            "puesto": 71,
+            "incremento": 5.26,
+            "puntaje": 1362.37
+          },
+          {
+            "fecha": "2026-04-10",
+            "puesto": 65,
+            "incremento": 13.33,
+            "puntaje": 1385.84
+          }
+        ]
+      },
+      {
+        "pais": "Qatar",
+        "historial": [
+            {
+                "fecha": "2025-09-18",
+                "puesto": 53,
+                "incremento": -4.43,
+                "puntaje": 1453.65
+              },
+              {
+                "fecha": "2025-10-17",
+                "puesto": 52,
+                "incremento": 11.08,
+                "puntaje": 1461.60
+              },
+              {
+                "fecha": "2025-11-19",
+                "puesto": 51,
+                "incremento": 11.08,
+                "puntaje": 1461.60
+              },
+              {
+                "fecha": "2025-12-22",
+                "puesto": 54,
+                "incremento": -2.38,
+                "puntaje": 1454.96
+              },
+              {
+                "fecha": "2026-01-19",
+                "puesto": 56,
+                "incremento": -2.38,
+                "puntaje": 1454.96
+              },
+              {
+                "fecha": "2026-04-10",
+                "puesto": 55,
+                "incremento": -2.38,
+                "puntaje": 1454.96
+              }
+        ]
+      },
+      {
+        "pais": "Suiza",
+        "historial": [
+            {
+                "fecha": "2025-09-18",
+                "puesto": 17,
+                "incremento": 8.60,
+                "puntaje": 1648.30
+              },
+              {
+                "fecha": "2025-10-17",
+                "puesto": 17,
+                "incremento": -4.56,
+                "puntaje": 1653.32
+              },
+              {
+                "fecha": "2025-11-19",
+                "puesto": 17,
+                "incremento": -7.49,
+                "puntaje": 1654.69
+              },
+              {
+                "fecha": "2025-12-22",
+                "puesto": 17,
+                "incremento": -7.49,
+                "puntaje": 1654.69
+              },
+              {
+                "fecha": "2026-01-19",
+                "puesto": 18,
+                "incremento": -7.49,
+                "puntaje": 1654.69
+              },
+              {
+                "fecha": "2026-04-10",
+                "puesto": 19,
+                "incremento": -0.95,
+                "puntaje": 1649.40
+              }
+        ]
+      },
+      {
+        "pais": "Brasil",
+        "historial": [
+            {
+                "fecha": "2025-09-18",
+                "puesto": 6,
+                "incremento": -1.49,
+                "puntaje": 1761.60
+              },
+              {
+                "fecha": "2025-10-17",
+                "puesto": 7,
+                "incremento": -6.18,
+                "puntaje": 1758.85
+              },
+              {
+                "fecha": "2025-11-19",
+                "puesto": 5,
+                "incremento": -2.37,
+                "puntaje": 1760.46
+              },
+              {
+                "fecha": "2025-12-22",
+                "puesto": 5,
+                "incremento": -2.37,
+                "puntaje": 1760.46
+              },
+              {
+                "fecha": "2026-01-19",
+                "puesto": 5,
+                "incremento": -2.37,
+                "puntaje": 1760.46
+              },
+              {
+                "fecha": "2026-04-10",
+                "puesto": 6,
+                "incremento": 4.67,
+                "puntaje": 1761.60
+              }
+        ]
+      },
+      {
+        "pais": "Marruecos",
+        "historial": [
+            {
+                "fecha": "2025-09-18",
+                "puesto": 11,
+                "incremento": 4.10,
+                "puntaje": 1706.27
+              },
+              {
+                "fecha": "2025-10-17",
+                "puesto": 12,
+                "incremento": 2.28,
+                "puntaje": 1710.11
+              },
+              {
+                "fecha": "2025-11-19",
+                "puesto": 11,
+                "incremento": 1.65,
+                "puntaje": 1713.12
+              },
+              {
+                "fecha": "2025-12-22",
+                "puesto": 11,
+                "incremento": 1.04,
+                "puntaje": 1716.34
+              },
+              {
+                "fecha": "2026-01-19",
+                "puesto": 8,
+                "incremento": -18.02,
+                "puntaje": 1736.57
+              },
+              {
+                "fecha": "2026-04-10",
+                "puesto": 8,
+                "incremento": 2.79,
+                "puntaje": 1755.87
+              }
+        ]
+      },
+      {
+        "pais": "Haiti",
+        "historial": [
+            {
+                "fecha": "2025-09-18",
+                "puesto": 87,
+                "incremento": 5.03,
+                "puntaje": 1269.24
+              },
+              {
+                "fecha": "2025-10-17",
+                "puesto": 88,
+                "incremento": -9.95,
+                "puntaje": 1268.32
+              },
+              {
+                "fecha": "2025-11-19",
+                "puesto": 84,
+                "incremento": 8.78,
+                "puntaje": 1294.49
+              },
+              {
+                "fecha": "2025-12-22",
+                "puesto": 84,
+                "incremento": 8.78,
+                "puntaje": 1294.49
+              },
+              {
+                "fecha": "2026-01-19",
+                "puesto": 83,
+                "incremento": 8.78,
+                "puntaje": 1294.49
+              },
+              {
+                "fecha": "2026-04-10",
+                "puesto": 83,
+                "incremento": 0.52,
+                "puntaje": 1291.71
+              }
+        ]
+      },
+      {
+        "pais": "Escocia",
+        "historial": [
+            {
+                "fecha": "2025-09-18",
+                "puesto": 43,
+                "incremento": 6.97,
+                "puntaje": 1485.08
+              },
+              {
+                "fecha": "2025-10-17",
+                "puesto": 38,
+                "incremento": 6.39,
+                "puntaje": 1504.20
+              },
+              {
+                "fecha": "2025-11-19",
+                "puesto": 36,
+                "incremento": 15.82,
+                "puntaje": 1506.77
+              },
+              {
+                "fecha": "2025-12-22",
+                "puesto": 36,
+                "incremento": 15.82,
+                "puntaje": 1506.77
+              },
+              {
+                "fecha": "2026-01-19",
+                "puesto": 38,
+                "incremento": 15.82,
+                "puntaje": 1506.77
+              },
+              {
+                "fecha": "2026-04-10",
+                "puesto": 43,
+                "incremento": -4.76,
+                "puntaje": 1498.35
+              }
+        ]
+      },
+      {
+        "pais": "EEUU",
+        "historial": [
+            {
+                "fecha": "2025-09-18",
+                "puesto": 16,
+                "incremento": 4.81,
+                "puntaje": 1670.04
+              },
+              {
+                "fecha": "2025-10-17",
+                "puesto": 16,
+                "incremento": 4.23,
+                "puntaje": 1673.49
+              },
+              {
+                "fecha": "2025-11-19",
+                "puesto": 14,
+                "incremento": 5.01,
+                "puntaje": 1681.88
+              },
+              {
+                "fecha": "2025-12-22",
+                "puesto": 14,
+                "incremento": 5.01,
+                "puntaje": 1681.88
+              },
+              {
+                "fecha": "2026-01-19",
+                "puesto": 15,
+                "incremento": 5.01,
+                "puntaje": 1681.88
+              },
+              {
+                "fecha": "2026-04-10",
+                "puesto": 16,
+                "incremento": -4.22,
+                "puntaje": 1673.13
+              }
+        ]
       }
     ]
   }
