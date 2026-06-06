@@ -20,6 +20,7 @@ export default [
             '@typescript-eslint/no-unused-vars': 'off',
             '@typescript-eslint/ban-ts-comment': 'off',
             'no-unsafe-optional-chaining': 'off',
+            "builderbot/func-prefix-endflow-flowdynamic": "off"
         },
     },
 ]

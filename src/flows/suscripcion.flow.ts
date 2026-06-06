@@ -13,7 +13,7 @@ export const suscripcionFlow = addKeyword(['solicitar_suscripcion_interna'])
 
       if (user && user.email) {
         // 🌟 JUGADA A: Si ya está registrado, lo saludamos y cerramos el flujo con estilo
-        return await endFlow([
+        return endFlow([
           `✉️ *SITACIÓN DE TU SUSCRIPCIÓN* ✉️`,
           ``,
           `¡Hola, *${user.name.toUpperCase()}*! 👋`,
@@ -48,7 +48,7 @@ export const suscripcionFlow = addKeyword(['solicitar_suscripcion_interna'])
 
     } catch (error) {
       console.error('Error al verificar suscripción en MongoDB:', error);
-      return await endFlow('❌ Hubo un inconveniente técnico al conectar con la base de datos de suscripciones. Por favor, inténtalo de nuevo escribiendo *MENU*.');
+      return endFlow('❌ Hubo un inconveniente técnico al conectar con la base de datos de suscripciones. Por favor, inténtalo de nuevo escribiendo *MENU*.');
     }
   })
   .addAction({ capture: true }, async (ctx, { flowDynamic, state, fallBack }) => {
