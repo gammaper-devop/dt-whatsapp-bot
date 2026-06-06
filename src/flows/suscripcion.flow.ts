@@ -1,115 +1,130 @@
 import { addKeyword } from '@builderbot/bot';
-import { LocuraService } from '../services/locura.service';
-import { validateEmail } from '../utils/validateEmail';
-
-import { MongoUser } from '../models/mongo.schemas';
-
-const locuraService = LocuraService.getInstance(); //[cite: 12]
+import { MongoUser } from '../models/mongo.schemas'; // Ajusta la ruta relativa según tus carpetas
+import { validateEmail } from '../utils/validateEmail'; // Tu validador de correos que subiste
 
 export const suscripcionFlow = addKeyword(['solicitar_suscripcion_interna'])
-  .addAnswer(
-    [
-      '📨 *SUSCRIPCIÓN PREMIUM DEL MUNDIAL* 📨',
-      '',
-      '¡Activa tus alertas exclusivas y sé el primero en recibir:',
-      '⚽ Resultados en tiempo real de los partidos.',
-      '📈 Variaciones del Ranking FIFA al instante.',
-      '🧠 Pronósticos avanzados e informes de nuestra IA.',
-      '',
-      '✍️ Para comenzar, por favor escribe tu *Nombre Completo*:',
-      '',
-      'Ejemplo: \`Juan Palomino\`',
-      '',
-      '_(O escribe *MENU* para cancelar)_'
-    ].join('\n'),
-    { capture: true },
-    async (ctx, { flowDynamic, state, fallBack }) => {
-      const nombreInput = ctx.body.trim();
+  .addAction(async (ctx, { flowDynamic, state, endFlow }) => {
+    const phone = ctx.from;
 
-      // Cláusula de escape standard[cite: 12]
-      if (['menu', 'hola', 'volver', 'ayuda'].includes(nombreInput.toLowerCase())) {
-        return;
+    try {
+      // 🕵️‍♂️ FILTRO DE PERSISTENCIA INTELIGENTE
+      // Buscamos si el usuario ya existe en MongoDB y si tiene un correo activo
+      const user = await MongoUser.findOne({ phone: phone });
+
+      if (user && user.email) {
+        // 🌟 JUGADA A: Si ya está registrado, lo saludamos y cerramos el flujo con estilo
+        return await endFlow([
+          `✉️ *SITACIÓN DE TU SUSCRIPCIÓN* ✉️`,
+          ``,
+          `¡Hola, *${user.name.toUpperCase()}*! 👋`,
+          ``,
+          `🚀 Queremos confirmarte que tu *Suscripción Premium* ya se encuentra completamente activa en nuestra base de datos mundialista.`,
+          ``,
+          `📌 *Datos vinculados:*`,
+          `• *Correo:* ${user.email}`,
+          `• *WhatsApp:* +${phone}`,
+          ``,
+          `Estás en la lista preferencial VIP. Recibirás alertas de goles en tiempo real, variaciones del ranking y reportes estadísticos exclusivos directo en este chat. ⚽🤖🔥`,
+          ``,
+          `_Escribe *MENU* para volver a la lista de opciones principales._`
+        ].join('\n'));
       }
 
-      // Validaciones de robustez del nombre completo[cite: 12]
-      if (nombreInput.length < 8) {
-        return fallBack('⚠️ *Nombre demasiado corto.* Por favor, ingresa tu *Nombre Completo:*' +
-                        `\n(Ejemplo: \`Juan Palomino\`)`
-        );
-      }
+      // 🌟 JUGADA B: Si no está registrado o no tiene correo, iniciamos el onboarding dinámico
+      await flowDynamic([
+        `📨 *SUSCRIPCIÓN PREMIUM DEL MUNDIAL* 📨`,
+        ``,
+        `¡Activa tus alertas exclusivas y sé el primero en recibir:`,
+        `⚽ Resultados en tiempo real de los partidos.`,
+        `📈 Variaciones del Ranking FIFA al instante.`,
+        `🧠 Pronósticos avanzados e informes de nuestra IA.`,
+        ``,
+        `✍️ Para comenzar, por favor escribe tu *Nombre Completo*:`,
+        ``,
+        `_Ejemplo: Juan Palomino_`,
+        ``,
+        `_(O escribe *MENU* para cancelar)_`
+      ].join('\n'));
 
-      if (nombreInput.length > 50) {
-        return fallBack('⚠️ Por favor, ingresa un nombre más corto (máximo 50 caracteres):');
-      }
-
-      // Almacenamos temporalmente el nombre en el estado del usuario
-      await state.update({ registerName: nombreInput });
-
-      // Avanzamos al siguiente paso de captura de manera fluida
-      return await flowDynamic(`🤝 ¡Mucho gusto, *${nombreInput}*!\n\n📧 Ahora, por favor ingresa tu **Correo Electrónico** para vincular tu suscripción: \nEjemplo: \`usuario@gmail.com\``);
+    } catch (error) {
+      console.error('Error al verificar suscripción en MongoDB:', error);
+      return await endFlow('❌ Hubo un inconveniente técnico al conectar con la base de datos de suscripciones. Por favor, inténtalo de nuevo escribiendo *MENU*.');
     }
-  )
+  })
+  .addAction({ capture: true }, async (ctx, { flowDynamic, state, fallBack }) => {
+    const inputName = ctx.body.trim();
+
+    // Cláusula de escape rápida
+    if (['menu', 'hola', 'ayuda', 'volver'].includes(inputName.toLowerCase())) {
+      return; 
+    }
+
+    if (inputName.length < 8) {
+      return fallBack('⚠️ *Nombre demasiado corto.* Por favor, ingresa tu *Nombre Completo:*' +
+                      `\n(Ejemplo: \`Juan Palomino\`)`
+      );
+    }
+
+    // Guardamos el nombre temporalmente en el estado en memoria de BuilderBot
+    await state.update({ registerName: inputName });
+
+    await flowDynamic([
+      `📧 *¡Excelente, ${inputName}!* Ahora necesitamos tu correo electrónico.`,
+      ``,
+      `✍️ *Escribe tu dirección de email actual:*`,
+      `_Ejemplo: juan.palomino@gmail.com_`,
+      ``,
+      `_(O escribe *MENU* para cancelar)_`
+    ].join('\n'));
+  })
   .addAction({ capture: true }, async (ctx, { flowDynamic, state, fallBack }) => {
     const emailInput = ctx.body.trim().toLowerCase();
-    const phone = ctx.from; // Capturamos el número de teléfono nativo de WhatsApp[cite: 12]
 
-    // Cláusula de escape standard[cite: 12]
-    if (['menu', 'hola', 'volver', 'ayuda'].includes(emailInput)) {
+    // Cláusula de escape rápida
+    if (['menu', 'hola', 'ayuda', 'volver'].includes(emailInput)) {
       return;
     }
 
-    // Uso de tu función personalizada alojada en utils
-    const isEmailValid = validateEmail(emailInput);
+    // Usamos tu módulo de validación utilitaria cargado
+    const isEmailValid = validateEmail(emailInput); //
 
-    if (!isEmailValid) {
-      return fallBack('⚠️ *Correo electrónico no válido.*\n\nAsegúrate de incluir el "@" y un dominio correcto (Ejemplo: `usuario@gmail.com`).\n\nInténtalo de nuevo:');
+    if (!isEmailValid) { //
+      return fallBack('⚠️ *Correo electrónico no válido.*\n\nPor favor, asegúrate de escribir una dirección correcta.\nEjemplo: `tuusuario@dominio.com` \n\n_Inténtalo de nuevo (o escribe *MENU* para salir):_');
     }
 
-    // Recuperamos el nombre almacenado en el paso anterior
     const nombreGuardado = state.get('registerName');
 
     try {
-      // 💾 PERSISTENCIA EN MONGO DB A TRAVÉS DE TU SERVICIO EXISTENTE
-      // Recuperamos el documento actual del usuario de la Copa del Mundo[cite: 12, 14]
-      // const user = await locuraService.getUser(phone); //[cite: 12]
-      // Usamos findOneAndUpdate con el operador $set para obligar a Mongo a registrar el correo
-      const userUpdated = await MongoUser.findOneAndUpdate(
-        { phone: phone }, // Buscamos por el teléfono de WhatsApp[cite: 17, 19]
+      // 💾 ESCRITURA ATÓMICA BLINDADA EN MONGO DB
+      await MongoUser.findOneAndUpdate(
+        { phone: ctx.from },
         { 
           $set: { 
             name: nombreGuardado,
             email: emailInput,
-            lastActive: Date.now(),
-            active: true
+            lastActive: Date.now()
           } 
         },
-        { new: true, upsert: true } // Si el usuario no existe por algún motivo, lo crea (upsert)
+        { new: true, upsert: true }
       );
 
-      if (!userUpdated) {
-        throw new Error('No se pudo actualizar o crear el usuario en la base de datos.');
-      }
+      // Limpiamos los estados de memoria para evitar residuos
+      await state.update({ registerName: null });
 
-      // Mensaje estético final con formato premium de confirmación
-      const mensajeExito = [
-        `✅ *¡SUSCRIPCIÓN ACTIVADA EXITOSAMENTE!* 🎉`,
+      await flowDynamic([
+        `✅ *¡SUSCRIPCIÓN PREMIUM ACTIVADA!* 🎉`,
         `───────────────────────`,
         `👤 *Titular:* ${nombreGuardado}`,
         `📧 *Correo:* ${emailInput}`,
-        `📱 *WhatsApp vinculado:* +${phone}`,
+        `📱 *WhatsApp:* +${ctx.from}`,
         `───────────────────────`,
-        `🚀 Desde este momento estás en la lista preferencial. Te notificaremos de manera automatizada cada vez que ruede el balón.`,
+        `🚀 ¡Bienvenido a bordo, crack! Desde este instante formas parte de nuestra suite preferencial. Te notificaremos de manera automatizada cada vez que ruede el balón.`,
         ``,
-        `_Escribe *MENU* para volver a las opciones principales._`
-      ].join('\n');
-
-      // Limpiamos los estados temporales de registro para evitar basura en memoria
-      await state.update({ registerName: null });
-
-      return await flowDynamic(mensajeExito);
+        `_Escribe *MENU* para regresar a las opciones principales._`
+      ].join('\n'));
 
     } catch (error) {
-      console.error('Error crítico al guardar la suscripción en MongoDB:', error);
-      return await flowDynamic('❌ Hubo un inconveniente técnico al procesar tu suscripción en la base de datos. Por favor, inténtalo de nuevo en unos minutos.');
+      console.error('Error al guardar registro en Mongo:', error);
+      return await flowDynamic('❌ Ocurrió un error técnico al almacenar tus datos en la suscripción. Por favor, vuelve a intentarlo en unos minutos.');
     }
   });
