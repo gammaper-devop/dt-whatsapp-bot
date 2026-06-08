@@ -100,4 +100,30 @@ export class LocuraService {
       return null;
     }
   }
+
+  async obtenerPronosticoPoisson(team1: string, team2: string): Promise<any> {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/api/v1/predict', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          home_team: team1, // "Argentina"
+          away_team: team2  // "France"
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Poisson API HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error de conexión con el backend de Poisson (POST):', error);
+      return null;
+    }
+  }
 } // <-- Esta es la llave final que cierra la clase LocuraService

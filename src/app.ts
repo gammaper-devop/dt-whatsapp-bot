@@ -16,6 +16,7 @@ import { rankingFifaFlow } from './flows/rankingFifa.flow';
 import { adivinoFlow, iaConsultarFlow } from './flows/adivino.flow';
 import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
 import { suscripcionFlow } from './flows/suscripcion.flow';
+import { poissonFlow } from './flows/poisson.flow';
 
 const PORT = process.env.PORT ?? 3008;
 
@@ -44,30 +45,31 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
     
     await flowDynamic(`🔥 *¡BIENVENIDO A LA ZONA DE CANDELA MUNDIALISTA! 🔥, ${userName.toUpperCase()}!* 🎉
 
-¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖,
+      ¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖,
 
-*Comandos disponibles:*
-1. *TRIVIA* - Reta y pon a prueba tus conocimientos 🧠
-2. *RANKING* - Consulta el ranking FIFA 2026 🏆
-3. *PREDIGO* - Juega tus propios pronósticos 🔮
-4. *IA ANALÍTICA* - Consulta la predicción de nuestro cerebro artificial 🤖
-5. *PROXIMOS* - Próximos partidos ⚽
-6. *EQUIPOS* - Todas las selecciones 🌍
-7. *CALENDARIO* - Partidos completos 📅
-8. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
+      *Comandos disponibles:*
+      1. *TRIVIA* - Reta y pon a prueba tus conocimientos 🧠
+      2. *RANKING* - Consulta el ranking FIFA 2026 🏆
+      3. *PREDIGO* - Juega tus propios pronósticos 🔮
+      4. *OJO DEL DT* - Pronóstico nuestro cerebro artificial 🤖
+      5. *JUGADA MATEMÁTICA* - Los 5 marcadores más probables 📈
+      6. *PROXIMOS* - Próximos partidos ⚽
+      7. *EQUIPOS* - Todas las selecciones 🌍
+      8. *CALENDARIO* - Partidos completos 📅
+      9. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
 
-${partidosTexto}
+      ${partidosTexto}
 
-⚡ _¿Cuál es tu primera jugada? Responde directamente con el número de tu opción:_`);
+      ⚡ _¿Cuál es tu primera jugada? Responde directamente con el número de tu opción:_`);
   })
   .addAction({ capture: true }, async (ctx, { gotoFlow, flowDynamic, fallBack }) => {
     const opcion = ctx.body.trim();
     
     // Lista de opciones numéricas estrictas que permitimos procesar en el menú
-    const opcionesValidas = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    const opcionesValidas = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     
     if (!opcionesValidas.includes(opcion)) {
-      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 8* o escribe *MENU* para volver a empezar.`);
+      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 9* o escribe *MENU* para volver a empezar.`);
     }
     
     // El enrutador ahora solo se ejecuta de forma interna y controlada tras la captura
@@ -81,12 +83,14 @@ ${partidosTexto}
       case '4':
         return gotoFlow(iaConsultarFlow);
       case '5':
-        return gotoFlow(proximosFlow);
+        return gotoFlow(poissonFlow);
       case '6':
-        return gotoFlow(equiposFlow);
+        return gotoFlow(proximosFlow);
       case '7':
-        return gotoFlow(calendarioFlow);
+        return gotoFlow(equiposFlow);
       case '8':
+        return gotoFlow(calendarioFlow);
+      case '9':
         return gotoFlow(suscripcionFlow);
     }
   });
@@ -105,14 +109,15 @@ const main = async () => {
   const adapterFlow = createFlow([
     mainFlow,
     welcomeFlow,
-    hinchaRecordFlow,      // Se activa directo con la opción 1
+    hinchaRecordFlow,
     rankingFifaFlow,       
-    adivinoFlow,           // Opción 4
-    iaConsultarFlow,       // Opción 5
-    proximosFlow,          // Opción 6 calendario.flow
-    equiposFlow,           // Opción 7 calendario.flow
-    calendarioFlow,        // Opción 8 calendario.flow
-    suscripcionFlow        
+    adivinoFlow,          
+    iaConsultarFlow,      
+    proximosFlow,
+    equiposFlow,       
+    calendarioFlow,
+    suscripcionFlow,
+    poissonFlow        
   ]);
   
   const adapterProvider = createProvider(Provider, { 
