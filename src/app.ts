@@ -17,6 +17,7 @@ import { adivinoFlow, iaConsultarFlow } from './flows/adivino.flow';
 import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
 import { suscripcionFlow } from './flows/suscripcion.flow';
 import { poissonFlow } from './flows/poisson.flow';
+import { NotifierService } from './services/notifier.service';
 
 const PORT = process.env.PORT ?? 3008;
 
@@ -56,7 +57,7 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
       6. *PROXIMOS* - Próximos partidos ⚽
       7. *EQUIPOS* - Todas las selecciones 🌍
       8. *CALENDARIO* - Partidos completos 📅
-      9. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
+      9. *SUSCRIPCIÓN* - Resúmenes diarios y goles en tu WhatsApp 📨
 
       ${partidosTexto}
 
@@ -125,6 +126,10 @@ const main = async () => {
   });
   
   const adapterDB = new Database();
+
+  // INICIALIZAMOS E INYECTAMOS EL PROVEEDOR EN EL CRON JUSTO AQUÍ:
+  const notifierService = new NotifierService(adapterProvider);
+  notifierService.inicializarCronResultados();
   
   const { handleCtx, httpServer } = await createBot({
     flow: adapterFlow,
