@@ -86,7 +86,7 @@ export class LocuraService {
    */
   async obtenerPronosticoIA(equipo1: string, equipo2: string): Promise<any> {
     try {
-      const url = `http://127.0.0.1:8000/api/v1/pronostico?equipo1=${encodeURIComponent(equipo1)}&equipo2=${encodeURIComponent(equipo2)}`;
+      const url = `http://93.189.89.112:8000/api/v1/pronostico?equipo1=${encodeURIComponent(equipo1)}&equipo2=${encodeURIComponent(equipo2)}`;
       
       const response = await fetch(url);
       if (!response.ok) {
@@ -103,7 +103,7 @@ export class LocuraService {
 
   async obtenerPronosticoPoisson(team1: string, team2: string): Promise<any> {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/v1/predict', {
+      const response = await fetch('http://93.189.89.112:8001/api/v1/predict', {
         method: 'POST',
         headers: {
           'accept': 'application/json',

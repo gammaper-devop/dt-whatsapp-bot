@@ -125,6 +125,10 @@ export class FifaCalendarService {
     return this.partidos.find(p => p.id === id);
   }
 
+  getTodosLosPartidosRaw(): Match[] {
+    return this.partidos;
+  }
+
   getTodosLosEquipos(): string[] {
     const equipos = new Set<string>();
     this.partidos.forEach(p => {

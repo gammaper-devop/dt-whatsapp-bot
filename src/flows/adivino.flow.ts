@@ -73,8 +73,10 @@ export const adivinoFlow = addKeyword(['solicitar_predigo_interno'])
     const t1Ingles = traducirAIngles(parsed.team1);
     const t2Ingles = traducirAIngles(parsed.team2);
 
-    const todosLosPartidos = calendarService.getProximosPartidos(104);
+    // const todosLosPartidos = calendarService.getProximosPartidos(104);
     
+    const todosLosPartidos = calendarService.getTodosLosPartidosRaw();
+
     const partidoMatch = todosLosPartidos.find(p => {
       const matchIngles = (p.team1.toLowerCase() === t1Ingles.toLowerCase() && p.team2.toLowerCase() === t2Ingles.toLowerCase()) ||
                           (p.team1.toLowerCase() === t2Ingles.toLowerCase() && p.team2.toLowerCase() === t1Ingles.toLowerCase());
@@ -144,8 +146,10 @@ export const iaConsultarFlow = addKeyword(['solicitar_ia_interna'])
     const eq1Limpio = normalizeTeamName(equipos.eq1); // "mexico"
     const eq2Limpio = normalizeTeamName(equipos.eq2); // "sudafrica"
 
-    const todosLosPartidos = calendarService.getProximosPartidos(104);
+    // const todosLosPartidos = calendarService.getProximosPartidos(104);
     
+    const todosLosPartidos = calendarService.getTodosLosPartidosRaw();
+
     // Buscamos el partido real en el calendario
     const partidoMatch = todosLosPartidos.find(p => {
       const p1Normalizado = normalizeTeamName(p.team1);

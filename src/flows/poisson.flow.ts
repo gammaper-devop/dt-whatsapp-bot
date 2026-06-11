@@ -19,7 +19,7 @@ function parseConsultaPoisson(text: string): { eq1: string; eq2: string } | null
 export const poissonFlow = addKeyword(['solicitar_poisson_interno'])
   .addAction(async (ctx, { flowDynamic }) => {
     await flowDynamic([
-      `📊 *CÁLCULO MATEMÁTICO (MODELO POISSON)* 📊`,
+      `📊 *CÁLCULO MATEMÁTICO (Procesando Informacion...)* 📊`,
       ``,
       `Calcula probabilidades estadísticas basadas en goles esperados (xG), rendimiento histórico y cuotas justas de mercado.`,
       ``,
@@ -46,7 +46,9 @@ export const poissonFlow = addKeyword(['solicitar_poisson_interno'])
     const eq1Limpio = normalizeTeamName(equipos.eq1);
     const eq2Limpio = normalizeTeamName(equipos.eq2);
 
-    const todosLosPartidos = calendarService.getProximosPartidos(104);
+    // const todosLosPartidos = calendarService.getProximosPartidos(104);
+
+    const todosLosPartidos = calendarService.getTodosLosPartidosRaw();
     
     // Buscamos el partido en tu JSON local en español (data/worldcup2026_spanish.json)
     const partidoMatch = todosLosPartidos.find(p => {
@@ -72,7 +74,7 @@ export const poissonFlow = addKeyword(['solicitar_poisson_interno'])
     if (eq1Ingles.includes("&")) eq1Ingles = eq1Ingles.replace("&", "and");
     if (eq2Ingles.includes("&")) eq2Ingles = eq2Ingles.replace("&", "and");
 
-    await flowDynamic(`🧮 *Calculando matrices de Poisson...* ⏳\nProcesando variables estadísticas para *${nombreEspLocal.toUpperCase()}* vs *${nombreEspVisita.toUpperCase()}*...`);
+    await flowDynamic(`🧮 *Calculando informacion solicitada...* ⏳\nProcesando variables estadísticas para *${nombreEspLocal.toUpperCase()}* vs *${nombreEspVisita.toUpperCase()}*...`);
 
     const dataPoisson = await locuraService.obtenerPronosticoPoisson(eq1Ingles, eq2Ingles);
 
