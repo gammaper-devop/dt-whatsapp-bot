@@ -46,7 +46,8 @@ export const poissonFlow = addKeyword(['solicitar_poisson_interno'])
     const eq1Limpio = normalizeTeamName(equipos.eq1);
     const eq2Limpio = normalizeTeamName(equipos.eq2);
 
-    const todosLosPartidos = calendarService.getProximosPartidos(104);
+    // const todosLosPartidos = calendarService.getProximosPartidos(104);
+    const todosLosPartidos = calendarService.getTodosLosPartidosRaw();
     
     // Buscamos el partido en tu JSON local en español (data/worldcup2026_spanish.json)
     const partidoMatch = todosLosPartidos.find(p => {
