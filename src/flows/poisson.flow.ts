@@ -23,7 +23,7 @@ export const poissonFlow = addKeyword(['solicitar_poisson_interno'])
       ``,
       `Calcula probabilidades estadísticas basadas en goles esperados (xG), rendimiento histórico y cuotas justas de mercado.`,
       ``,
-      `✍️ *Escríbelo así:*`,
+      `✍️ *Escríbelo así: (Ejemplos)*`,
       `👉 \`Bélgica vs Irán\``,
       `👉 \`México - Sudáfrica\``,
       ``,
@@ -33,14 +33,14 @@ export const poissonFlow = addKeyword(['solicitar_poisson_interno'])
   .addAction({ capture: true }, async (ctx, { flowDynamic, fallBack }) => {
     const message = ctx.body.trim();
 
-    if (['menu', 'hola', 'ayuda', 'volver'].includes(message.toLowerCase())) {
+    if (['menu', 'hola', 'ayuda', 'volver', 'hi'].includes(message.toLowerCase())) {
       return;
     }
 
     const equipos = parseConsultaPoisson(message);
 
     if (!equipos) {
-      return fallBack(`⚠️ *No entendí las selecciones.*\n\nEscribe los dos países separados por la palabra *vs* o por un guion.\nEjemplo: \`Bélgica vs Irán\`\n\n_(O escribe *MENU* para salir)_`);
+      return fallBack(`⚠️ *No entendí los rivales.*\n\nEscribe los dos países separados por la palabra *vs* o por un guion (-).\n\n✍️ *Escríbelo así: (Ejemplos)*\n👉 \`Colombia vs Uzbekistán\`\n👉 \`Argentina - Argelia\`\n\n_(O escribe *MENU* para salir)_`);
     }
 
     const eq1Limpio = normalizeTeamName(equipos.eq1);
@@ -80,7 +80,7 @@ export const poissonFlow = addKeyword(['solicitar_poisson_interno'])
 
     if (!dataPoisson || dataPoisson.error) {
       await flowDynamic([
-        `🤖 *ALERTA DEL SISTEMA POISSON* 🤖`,
+        `🤖 *ALERTA DEL SISTEMA* 🤖`,
         ``,
         `No disponemos de la densidad de datos históricos necesaria para procesar la distribución de Poisson para *${nombreEspLocal}* vs *${nombreEspVisita}*.`,
         ``,
@@ -103,7 +103,7 @@ export const poissonFlow = addKeyword(['solicitar_poisson_interno'])
 
     // 🌟 UNIFICACIÓN TOTAL AL ESPAÑOL
     const flyerPoisson = [
-      `📊 *INFORME CIENTÍFICO DE POISSON* 📊`,
+      `📊 *INFORME CIENTÍFICO DE DATOS* 📊`,
       `───────────────────────`,
       `⚽ *Partido:* ${nombreEspLocal.toUpperCase()} vs ${nombreEspVisita.toUpperCase()}`,
       `───────────────────────`,

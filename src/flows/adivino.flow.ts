@@ -39,7 +39,7 @@ export const adivinoFlow = addKeyword(['solicitar_predigo_interno'])
       ``,
       `Ingresa tu pronóstico para cualquiera de los partidos oficiales y demuestra que eres el verdadero gurú del torneo.`,
       ``,
-      `✍️ *Escríbelo como te sea más cómodo:*`,
+      `✍️ *Escríbelo así: (Ejemplos)*`,
       `👉 \`México 2 vs Sudáfrica 1\``,
       `👉 \`México 2 - 1 Sudáfrica\``,
       ``,
@@ -53,7 +53,7 @@ export const adivinoFlow = addKeyword(['solicitar_predigo_interno'])
     const phone = ctx.from;
     const message = ctx.body.trim();
 
-    if (['menu', 'hola', 'ayuda', 'volver'].includes(message.toLowerCase())) {
+    if (['menu', 'hola', 'ayuda', 'volver', 'hi'].includes(message.toLowerCase())) {
       return; 
     }
 
@@ -127,19 +127,19 @@ export const adivinoFlow = addKeyword(['solicitar_predigo_interno'])
 // =====================================================================
 export const iaConsultarFlow = addKeyword(['solicitar_ia_interna'])
   .addAction(async (ctx, { flowDynamic }) => {
-    await flowDynamic(`🧠 *EL CONSULTOR ANALÍTICO IA* 🧠\n\n¿Qué partido quieres que procese el algoritmo?\n\n✍️ *Escríbelo así:*\n👉 \`Colombia vs Uzbekistán\`\n👉 \`Argentina - Argelia\`\n\n_Escribe los equipos a consultar:_`);
+    await flowDynamic(`🧠 *EL CONSULTOR ANALÍTICO IA* 🧠\n\n¿Qué partido quieres que procese el algoritmo?\n\n✍️ *Escríbelo así: (Ejemplos)*\n👉 \`Colombia vs Uzbekistán\`\n👉 \`Argentina - Argelia\`\n\n_Escribe los equipos a consultar:_`);
   })
   .addAction({ capture: true }, async (ctx, { flowDynamic, fallBack }) => {
     const message = ctx.body.trim();
 
-    if (['menu', 'hola', 'ayuda', 'volver'].includes(message.toLowerCase())) {
+    if (['menu', 'hola', 'ayuda', 'volver', 'hi'].includes(message.toLowerCase())) {
       return;
     }
 
     const equipos = parseConsultaIA(message);
 
     if (!equipos) {
-      return fallBack(`⚠️ *No entendí los rivales.*\n\nEscribe los dos países separados por la palabra *vs* o por un guion.\nEjemplo: \`Colombia vs Uzbekistan\`\n\n_(O escribe *MENU* para salir)_`);
+      return fallBack(`⚠️ *No entendí los rivales.*\n\nEscribe los dos países separados por la palabra *vs* o por un guion (-).\n\n✍️ *Escríbelo así: (Ejemplos)*\n👉 \`Colombia vs Uzbekistán\`\n👉 \`Argentina - Argelia\`\n\n_(O escribe *MENU* para salir)_`);
     }
 
     // Al usar la nueva RegEx, equipos.eq1 será "México" y equipos.eq2 será "Sudáfrica"
@@ -167,7 +167,7 @@ export const iaConsultarFlow = addKeyword(['solicitar_ia_interna'])
     const eq1Ingles = traducirAIngles(partidoMatch.team1);
     const eq2Ingles = traducirAIngles(partidoMatch.team2);
 
-    await flowDynamic(`🧠 *Conectando con el Backend de Python...* ⏳\nProcesando Big Data para *${partidoMatch.team1.toUpperCase()}* vs *${partidoMatch.team2.toUpperCase()}*...`);
+    await flowDynamic(`🧠 *Conectando con el Backend...* ⏳\nProcesando Big Data para *${partidoMatch.team1.toUpperCase()}* vs *${partidoMatch.team2.toUpperCase()}*...`);
 
     const pronosticoIA = await locuraService.obtenerPronosticoIA(eq1Ingles, eq2Ingles);
 

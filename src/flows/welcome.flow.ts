@@ -26,16 +26,13 @@ export const welcomeFlow = addKeyword(EVENTS.WELCOME)
 
       ¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖,
       
-      *Comandos disponibles:*
-      1. *TRIVIA* - Reta y pon a prueba tus conocimientos 🧠
-      2. *RANKING* - Consulta el ranking FIFA 2026 🏆
-      3. *PREDIGO* - Juega tus propios pronósticos 🔮
-      4. *OJO DEL DT* - Pronóstico nuestro cerebro artificial 🤖
-      5. *JUGADA MATEMÁTICA* - Los 5 marcadores más probables 📈
-      6. *PROXIMOS* - Próximos partidos ⚽
-      7. *EQUIPOS* - Todas las selecciones 🌍
-      8. *CALENDARIO* - Partidos completos 📅
-      9. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
+      *Opciones disponibles:*
+      1. *OJO DEL DT* - Pronóstico nuestro cerebro artificial 🤖
+      2. *JUGADA MATEMÁTICA* - Los 5 marcadores más probables 📈
+      3. *PROXIMOS* - Próximos partidos ⚽
+      4. *EQUIPOS* - Todas las selecciones 🌍
+      5. *CALENDARIO* - Partidos completos 📅
+      6. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
       
       ${partidosTexto}
       

@@ -47,16 +47,13 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
 
       ¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖,
 
-      *Comandos disponibles:*
-      1. *TRIVIA* - Reta y pon a prueba tus conocimientos 🧠
-      2. *RANKING* - Consulta el ranking FIFA 2026 🏆
-      3. *PREDIGO* - Juega tus propios pronósticos 🔮
-      4. *OJO DEL DT* - Pronóstico nuestro cerebro artificial 🤖
-      5. *JUGADA MATEMÁTICA* - Los 5 marcadores más probables 📈
-      6. *PROXIMOS* - Próximos partidos ⚽
-      7. *EQUIPOS* - Todas las selecciones 🌍
-      8. *CALENDARIO* - Partidos completos 📅
-      9. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
+      *Opciones disponibles:*
+      1. *OJO DEL DT* - Pronóstico nuestro cerebro artificial 🤖
+      2. *JUGADA MATEMÁTICA* - Los 5 marcadores más probables 📈
+      3. *PROXIMOS* - Próximos partidos ⚽
+      4. *EQUIPOS* - Todas las selecciones 🌍
+      5. *CALENDARIO* - Partidos completos 📅
+      6. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
 
       ${partidosTexto}
 
@@ -66,31 +63,25 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
     const opcion = ctx.body.trim();
     
     // Lista de opciones numéricas estrictas que permitimos procesar en el menú
-    const opcionesValidas = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const opcionesValidas = ['1', '2', '3', '4', '5', '6'];
     
     if (!opcionesValidas.includes(opcion)) {
-      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 9* o escribe *MENU* para volver a empezar.`);
+      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 6* o escribe *MENU* para volver a empezar.`);
     }
     
     // El enrutador ahora solo se ejecuta de forma interna y controlada tras la captura
     switch (opcion) {
       case '1':
-        return gotoFlow(hinchaRecordFlow); // Ejecuta Trivia de forma aislada
-      case '2':
-        return gotoFlow(rankingFifaFlow); // Ejecuta Ranking de forma aislada
-      case '3':
-        return gotoFlow(adivinoFlow);
-      case '4':
         return gotoFlow(iaConsultarFlow);
-      case '5':
+      case '2':
         return gotoFlow(poissonFlow);
-      case '6':
+      case '3':
         return gotoFlow(proximosFlow);
-      case '7':
+      case '4':
         return gotoFlow(equiposFlow);
-      case '8':
+      case '5':
         return gotoFlow(calendarioFlow);
-      case '9':
+      case '6':
         return gotoFlow(suscripcionFlow);
     }
   });
