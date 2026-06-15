@@ -84,26 +84,35 @@ export class LocuraService {
   /**
    * Conecta con la API de FastAPI para obtener el pronóstico de la IA
    */
-  async obtenerPronosticoIA(equipo1: string, equipo2: string): Promise<any> {
+  async obtenerPronosticoIA(team1: string, team2: string): Promise<any> {
     try {
-      const url = `http://93.189.89.112:8000/api/v1/pronostico?equipo1=${encodeURIComponent(equipo1)}&equipo2=${encodeURIComponent(equipo2)}`;
-      
-      const response = await fetch(url);
+      const response = await fetch('http://127.0.0.1:5001/api/v1/randomForest', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          home_team: team1,
+          away_team: team2
+        })
+      });
+  
       if (!response.ok) {
-        throw new Error(`Error en la API de IA: ${response.statusText}`);
+        throw new Error(`Poisson API HTTP error! status: ${response.status}`);
       }
-      
+  
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error("❌ Error al conectar con el Backend de IA:", error);
+      console.error('Error de conexión con el backend de Random Forest (POST):', error);
       return null;
     }
   }
 
   async obtenerPronosticoPoisson(team1: string, team2: string): Promise<any> {
     try {
-      const response = await fetch('http://93.189.89.112:8001/api/v1/predict', {
+      const response = await fetch('http://127.0.0.1:5001/api/v1/poisson', {
         method: 'POST',
         headers: {
           'accept': 'application/json',
