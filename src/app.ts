@@ -17,6 +17,7 @@ import { adivinoFlow, iaConsultarFlow } from './flows/adivino.flow';
 import { proximosFlow, equiposFlow, calendarioFlow } from './flows/calendario.flow';
 import { suscripcionFlow } from './flows/suscripcion.flow';
 import { poissonFlow } from './flows/poisson.flow';
+import { predictLiveFlow } from './flows/predictLive.flow';
 
 const PORT = process.env.PORT ?? 3008;
 
@@ -54,6 +55,7 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
       4. *EQUIPOS* - Todas las selecciones 🌍
       5. *CALENDARIO* - Partidos completos 📅
       6. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
+      7. *ANÁLISIS EN VIVO (xG)* - Probabilidades basadas en el torneo actual📊
 
       ${partidosTexto}
 
@@ -63,10 +65,10 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
     const opcion = ctx.body.trim();
     
     // Lista de opciones numéricas estrictas que permitimos procesar en el menú
-    const opcionesValidas = ['1', '2', '3', '4', '5', '6'];
+    const opcionesValidas = ['1', '2', '3', '4', '5', '6', '7'];
     
     if (!opcionesValidas.includes(opcion)) {
-      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 6* o escribe *MENU* para volver a empezar.`);
+      return fallBack(`❌ Opción no válida. Por favor, selecciona un número del *1 al 7* o escribe *MENU* para volver a empezar.`);
     }
     
     // El enrutador ahora solo se ejecuta de forma interna y controlada tras la captura
@@ -83,6 +85,8 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
         return gotoFlow(calendarioFlow);
       case '6':
         return gotoFlow(suscripcionFlow);
+      case '7':
+        return gotoFlow(predictLiveFlow);
     }
   });
 
@@ -103,7 +107,8 @@ const main = async () => {
     hinchaRecordFlow,
     rankingFifaFlow,       
     adivinoFlow,          
-    iaConsultarFlow,      
+    iaConsultarFlow,
+    predictLiveFlow,     
     proximosFlow,
     equiposFlow,       
     calendarioFlow,

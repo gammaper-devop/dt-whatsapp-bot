@@ -33,6 +33,7 @@ export const welcomeFlow = addKeyword(EVENTS.WELCOME)
       4. *EQUIPOS* - Todas las selecciones 🌍
       5. *CALENDARIO* - Partidos completos 📅
       6. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
+      7. *ANÁLISIS EN VIVO (xG)* - Probabilidades basadas en el torneo actual📊
       
       ${partidosTexto}
       
