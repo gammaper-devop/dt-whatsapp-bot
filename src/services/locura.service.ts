@@ -86,7 +86,7 @@ export class LocuraService {
    */
   async obtenerPronosticoIA(team1: string, team2: string): Promise<any> {
     try {
-      const response = await fetch('http://127.0.0.1:5002/api/v1/randomForest', {
+      const response = await fetch('http://127.0.0.1:5002/api/v1/random-forest', {
         method: 'POST',
         headers: {
           'accept': 'application/json',

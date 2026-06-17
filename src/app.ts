@@ -49,13 +49,13 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
       ¡Hola! Bienvenido al Bot Oficial del Mundial 2026. ⚽🤖,
 
       *Opciones disponibles:*
-      1. *OJO DEL DT* - Pronóstico nuestro cerebro artificial 🤖
-      2. *JUGADA MATEMÁTICA* - Los 5 marcadores más probables 📈
-      3. *PROXIMOS* - Próximos partidos ⚽
-      4. *EQUIPOS* - Todas las selecciones 🌍
-      5. *CALENDARIO* - Partidos completos 📅
-      6. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
-      7. *ANÁLISIS EN VIVO (xG)* - Probabilidades basadas en el torneo actual📊
+      1. *ANÁLISIS EN VIVO (xG)* - Probabilidades basadas en el torneo actual📊
+      2. *OJO DEL DT* - Pronóstico nuestro cerebro artificial 🤖
+      3. *JUGADA MATEMÁTICA* - Los 5 marcadores más probables 📈
+      4. *PROXIMOS* - Próximos partidos ⚽
+      5. *EQUIPOS* - Todas las selecciones 🌍
+      6. *CALENDARIO* - Partidos completos 📅
+      7. *SUSCRIPCIÓN* - Recibe alertas exclusivas 📨
 
       ${partidosTexto}
 
@@ -74,19 +74,19 @@ const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas'
     // El enrutador ahora solo se ejecuta de forma interna y controlada tras la captura
     switch (opcion) {
       case '1':
-        return gotoFlow(iaConsultarFlow);
-      case '2':
-        return gotoFlow(poissonFlow);
-      case '3':
-        return gotoFlow(proximosFlow);
-      case '4':
-        return gotoFlow(equiposFlow);
-      case '5':
-        return gotoFlow(calendarioFlow);
-      case '6':
-        return gotoFlow(suscripcionFlow);
-      case '7':
         return gotoFlow(predictLiveFlow);
+      case '2':
+        return gotoFlow(iaConsultarFlow);
+      case '3':
+        return gotoFlow(poissonFlow);
+      case '4':
+        return gotoFlow(proximosFlow);
+      case '5':
+        return gotoFlow(equiposFlow);
+      case '6':
+        return gotoFlow(calendarioFlow);
+      case '7':
+        return gotoFlow(suscripcionFlow);
     }
   });
 
