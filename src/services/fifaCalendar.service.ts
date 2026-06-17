@@ -33,39 +33,50 @@ export class FifaCalendarService {
       const rawData = fs.readFileSync(jsonPath, 'utf8');
       const jsonData = JSON.parse(rawData);
       
-      this.partidos = jsonData.matches.map((match: any) => {
+      // 🚀 OBTENER LA FECHA DE HOY LIMPIA (Solo Año-Mes-Día para la comparación)
+      const ahora = new Date();
+      const hoyStr = ahora.toISOString().split('T')[0];
+      
+      const partidosMapeados: Match[] = [];
+
+      jsonData.matches.forEach((match: any) => {
         let fechaHora: Date | null = null;
         if (match.date && match.time) {
           const horaMatch = match.time.match(/(\d{2}):(\d{2})/);
           if (horaMatch) {
             fechaHora = new Date(match.date);
-            // Ajustamos horas UTC-6 o UTC-4 de manera segura
             fechaHora.setHours(parseInt(horaMatch[1]), parseInt(horaMatch[2]), 0);
           }
         }
-        
-        // CORRECCIÓN: Ahora validamos contra "Jornada" que es el término de tu JSON traducido
-        const isKnockout = !['Jornada 1', 'Jornada 2', 'Jornada 3', 'Jornada 4', 'Jornada 5', 
-                              'Jornada 6', 'Jornada 7', 'Jornada 8', 'Jornada 9', 'Jornada 10',
-                              'Jornada 11', 'Jornada 12', 'Jornada 13', 'Jornada 14', 'Jornada 15',
-                              'Jornada 16', 'Jornada 17'].includes(match.round);
-        
-        return {
-          id: match.num || `${match.round}_${match.team1}_${match.team2}`,
-          round: match.round,
-          date: match.date,
-          time: match.time,
-          fechaHora,
-          team1: match.team1,
-          team2: match.team2,
-          group: match.group || null,
-          ground: match.ground,
-          isKnockout
-        };
+
+        // 🚀 FILTRO DINÁMICO: Solo procesamos si el partido ocurre HOY o en el FUTURO
+        if (match.date && (match.date >= hoyStr)) {
+          
+          // 🌟 MANTENEMOS TU CÓDIGO DE IDENTIFICACIÓN DE ELIMINATORIAS DIRECTAS intacto para las demás funciones
+          const isKnockout = !['Jornada 1', 'Jornada 2', 'Jornada 3', 'Jornada 4', 'Jornada 5', 
+                                'Jornada 6', 'Jornada 7', 'Jornada 8', 'Jornada 9', 'Jornada 10',
+                                'Jornada 11', 'Jornada 12', 'Jornada 13', 'Jornada 14', 'Jornada 15',
+                                'Jornada 16', 'Jornada 17'].includes(match.round);
+          
+          partidosMapeados.push({
+            id: match.num || `${match.round}_${match.team1}_${match.team2}`,
+            round: match.round,
+            date: match.date,
+            time: match.time,
+            fechaHora,
+            team1: match.team1,
+            team2: match.team2,
+            group: match.group || null,
+            ground: match.ground,
+            isKnockout // Reinyectado de forma segura para conservar compatibilidad
+          });
+        }
       });
+
+      this.partidos = partidosMapeados;
       
-      // Organizar por grupos
-      this.grupos = {}; // Reset por seguridad
+      // Organizar por grupos de forma limpia con los partidos del futuro restantes
+      this.grupos = {}; 
       this.partidos.forEach(match => {
         if (match.group && !match.isKnockout) {
           if (!this.grupos[match.group]) this.grupos[match.group] = [];
@@ -73,7 +84,7 @@ export class FifaCalendarService {
         }
       });
       
-      console.log(`✅ Cargados ${this.partidos.length} partidos del Mundial 2026`);
+      console.log(`✅ Cargados ${this.partidos.length} partidos RESTANTES del Mundial 2026`);
     } catch (error) {
       console.error('Error cargando calendario:', error);
       this.partidos = [];
@@ -90,7 +101,6 @@ export class FifaCalendarService {
     return dateStr;
   }
 
-  // CORRECCIÓN: Ajustamos la expresión regular para que entienda "Jornada" en español
   private getMatchdayNumber(round: string): number {
     const match = round.match(/Jornada (\d+)/i);
     if (match) {
@@ -105,11 +115,8 @@ export class FifaCalendarService {
     return 999;
   }
 
-  // ============ MÉTODOS EXISTENTES ============
-  
   getProximosPartidos(cantidad: number = 5): Match[] {
     const ahora = new Date();
-    // Filtramos los partidos del JSON que tengan fecha válida posterior a la simulación actual
     const futuros = this.partidos.filter(p => p.fechaHora && p.fechaHora > ahora);
     
     if (futuros.length === 0) {
@@ -143,8 +150,6 @@ export class FifaCalendarService {
   getGrupos(): { [key: string]: Match[] } {
     return this.grupos;
   }
-
-  // ============ MÉTODOS PARA PRÓXIMOS PARTIDOS ============
   
   formatearListaProximos(partidos: Match[]): string {
     if (partidos.length === 0) {
@@ -169,8 +174,6 @@ export class FifaCalendarService {
     return mensaje;
   }
 
-  // ============ MÉTODOS PARA EQUIPOS ============
-  
   formatearListaEquipos(): string {
     const equipos = this.getTodosLosEquipos();
     const grupos = this.getGrupos();
@@ -193,8 +196,6 @@ export class FifaCalendarService {
     return mensaje;
   }
 
-  // ============ MÉTODOS PARA CALENDARIO COMPLETO ============
-  
   getCalendarioCompleto(): string {
     const partidosOrdenados = [...this.partidos];
     

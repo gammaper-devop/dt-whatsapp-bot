@@ -17,7 +17,7 @@ export const predictLiveFlow = addKeyword(['solicitar_live_interno'])
     await flowDynamic([
       `📊 *ANÁLISIS EN VIVO (MÉTRICAS DEL TORNEO)* 📊`,
       ``,
-      `Calcula probabilidades avanzadas cruzando el xG real acumulado en este torneo actual (MongoDB) y el histórico (CSV).`,
+      `Calcula probabilidades avanzadas cruzando el xG real acumulado en este torneo actual y el histórico.`,
       ``,
       `✍️ *Escríbelo así para ejecutar la IA:*`,
       `👉 \`Alemania vs Curazao\``,
