@@ -28,7 +28,7 @@ const calendarService = new FifaCalendarService();
 // =====================================================================
 // FLUJO PRINCIPAL UNIFICADO: MENÚ Y ENRUTADOR SEGURO (Bajo control)
 // =====================================================================
-const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas', 'menu', 'ayuda'])
+const mainFlow = addKeyword<Provider, Database>(['hola', 'hello', 'hi', 'buenas', 'menu', 'ayuda', 'menú'])
   .addAction(async (ctx, { flowDynamic }) => {
     const phone = ctx.from;
     const userName = ctx.pushName || 'Fanático';

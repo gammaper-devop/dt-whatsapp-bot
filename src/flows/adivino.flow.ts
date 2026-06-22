@@ -53,7 +53,7 @@ export const adivinoFlow = addKeyword(['solicitar_predigo_interno'])
     const phone = ctx.from;
     const message = ctx.body.trim();
 
-    if (['menu', 'hola', 'ayuda', 'volver', 'hi'].includes(message.toLowerCase())) {
+    if (['menu', 'hola', 'ayuda', 'volver', 'hi', 'menú'].includes(message.toLowerCase())) {
       return; 
     }
 
@@ -132,7 +132,7 @@ export const iaConsultarFlow = addKeyword(['solicitar_ia_interna'])
   .addAction({ capture: true }, async (ctx, { flowDynamic, fallBack }) => {
     const message = ctx.body.trim();
 
-    if (['menu', 'hola', 'ayuda', 'volver', 'hi'].includes(message.toLowerCase())) {
+    if (['menu', 'hola', 'ayuda', 'volver', 'hi', 'menú'].includes(message.toLowerCase())) {
       return;
     }
 

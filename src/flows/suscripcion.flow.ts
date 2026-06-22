@@ -55,7 +55,7 @@ export const suscripcionFlow = addKeyword(['solicitar_suscripcion_interna'])
     const inputName = ctx.body.trim();
 
     // Cláusula de escape rápida
-    if (['menu', 'hola', 'ayuda', 'volver'].includes(inputName.toLowerCase())) {
+    if (['menu', 'hola', 'ayuda', 'volver', 'menú'].includes(inputName.toLowerCase())) {
       return; 
     }
 
@@ -81,7 +81,7 @@ export const suscripcionFlow = addKeyword(['solicitar_suscripcion_interna'])
     const emailInput = ctx.body.trim().toLowerCase();
 
     // Cláusula de escape rápida
-    if (['menu', 'hola', 'ayuda', 'volver'].includes(emailInput)) {
+    if (['menu', 'hola', 'ayuda', 'volver', 'menú'].includes(emailInput)) {
       return;
     }
 

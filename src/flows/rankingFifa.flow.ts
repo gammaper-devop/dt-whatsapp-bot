@@ -24,7 +24,7 @@ export const rankingFifaFlow = addKeyword(['ejecutar_ranking_interno'])
         const input = ctx.body.trim();
 
         // Cláusula de escape inmediata si el usuario se arrepiente o quiere salir
-        if (['menu', 'hola', 'volver', 'ayuda'].includes(input.toLowerCase())) {
+        if (['menú','menu', 'hola', 'volver', 'ayuda'].includes(input.toLowerCase())) {
           return; // Permite que el enrutador global tome el control limpiamente
         }
 

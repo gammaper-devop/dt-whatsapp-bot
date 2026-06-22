@@ -33,7 +33,7 @@ export const poissonFlow = addKeyword(['solicitar_poisson_interno'])
   .addAction({ capture: true }, async (ctx, { flowDynamic, fallBack }) => {
     const message = ctx.body.trim();
 
-    if (['menu', 'hola', 'ayuda', 'volver', 'hi'].includes(message.toLowerCase())) {
+    if (['menu', 'hola', 'ayuda', 'volver', 'hi', 'menú'].includes(message.toLowerCase())) {
       return;
     }
 

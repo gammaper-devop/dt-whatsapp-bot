@@ -29,7 +29,7 @@ export const predictLiveFlow = addKeyword(['solicitar_live_interno'])
   .addAction({ capture: true }, async (ctx, { flowDynamic, fallBack }) => {
     const input = ctx.body.trim();
 
-    if (['menu', 'hola', 'volver', 'ayuda', 'hi', 'hello'].includes(input.toLowerCase())) {
+    if (['menu', 'hola', 'volver', 'ayuda', 'hi', 'hello', 'menú'].includes(input.toLowerCase())) {
       return;
     }
 

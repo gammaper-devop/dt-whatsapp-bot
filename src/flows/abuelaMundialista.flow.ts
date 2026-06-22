@@ -32,7 +32,7 @@ export const abuelaMundialistaFlow = addKeyword(['solicitar_abuela_interna'])
     const phone = ctx.from;
     const opcion = ctx.body.trim().toLowerCase();
 
-    if (['menu', 'hola', 'volver'].includes(opcion)) return;
+    if (['menu', 'hola', 'volver', 'menú'].includes(opcion)) return;
 
     let categoria: keyof typeof abuelaRespuestas = 'consejo';
     let puntosBonus = 3;

@@ -119,7 +119,7 @@ export const hinchaRecordFlow = addKeyword(['solicitar_trivia_interna'])
     if (!currentTrivia) return;
 
     // Cláusula de escape
-    if (['menu', 'hola', 'volver'].includes(incomingText)) {
+    if (['menu', 'hola', 'volver', 'menú'].includes(incomingText)) {
       return;
     }
 
